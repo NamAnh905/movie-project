@@ -1,0 +1,65 @@
+<div class="wrap">
+  <h2>Quản lý doanh thu</h2>
+
+  <div class="filters">
+    <label>Từ ngày</label>
+    <input type="date" [(ngModel)]="from" (change)="load()"/>
+
+    <label>Đến ngày</label>
+    <input type="date" [(ngModel)]="to" (change)="load()"/>
+
+    <label>Nhóm theo</label>
+    <select [(ngModel)]="groupBy" (change)="load()">
+      <option value="DAY">Ngày</option>
+      <option value="MONTH">Tháng</option>
+    </select>
+
+    <label class="chk">
+      <input type="checkbox" [(ngModel)]="onlyPaid" (change)="load()"/>
+      Chỉ đơn đã thanh toán
+    </label>
+  </div>
+
+  <div *ngIf="loading" class="loading">Đang tải...</div>
+  <div *ngIf="error" class="error">{{ error }}</div>
+
+  <ng-container *ngIf="data">
+    <div class="kpis">
+      <div class="kpi">
+        <div class="kpi-label">Tổng doanh thu</div>
+        <div class="kpi-value">{{ vnd(data.summary?.revenue) }} đ</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Số vé</div>
+        <div class="kpi-value">{{ data.summary?.tickets || 0 }}</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Số đơn</div>
+        <div class="kpi-value">{{ data.summary?.bookings || 0 }}</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Diễn biến doanh thu theo {{ groupBy==='DAY' ? 'ngày' : 'tháng' }}</div>
+      <div class="chart-box">
+        <canvas #seriesChart></canvas>
+      </div>
+    </div>
+
+    <div class="grid2">
+      <div class="card">
+        <div class="card-title">Top rạp theo doanh thu</div>
+        <div class="chart-box">
+          <canvas #cinemaChart></canvas>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Top phim theo doanh thu</div>
+        <div class="chart-box">
+          <canvas #movieChart></canvas>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</div>

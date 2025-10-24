@@ -1,0 +1,8 @@
+.page{padding:24px;}
+h2{color:#fff;margin:0 0 12px;}
+.box{padding:10px;border:1px solid #2a2e36;border-radius:10px;background:#111318;color:#cfd3dc}
+.box.error{border-color:#5e2a2a}
+.card{display:grid;gap:8px;background:#111318;border:1px solid #2a2e36;border-radius:12px;padding:16px;color:#cfd3dc;margin-top:12px}
+.actions{margin-top:16px;display:flex;gap:12px}
+.primary{height:40px;padding:0 18px;border:none;border-radius:10px;background:#16a34a;color:#fff}
+.ghost{display:inline-flex;align-items:center;height:40px;padding:0 14px;border-radius:10px;border:1px solid #2a2e36;color:#cfd3dc;text-decoration:none;cursor:pointer}

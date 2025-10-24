@@ -1,0 +1,85 @@
+
+.admin{ display:grid; grid-template-columns:260px 1fr; min-height:100vh; }
+.sidebar{ background:#0f1520; border-right:1px solid rgba(255,255,255,.10); padding:16px }
+.sidebar h3{ margin:0 0 14px; color:#e8edf2; font-size:20px }
+.sidebar a{ display:block; padding:10px 12px; border-radius:12px; color:#cfd7e3; text-decoration:none; transition:.15s ease; border:1px solid transparent }
+.sidebar a.active,.sidebar a:hover{ background:rgba(255,255,255,.06); color:#fff; border-color:rgba(255,255,255,.10) }
+.sidebar .back{ margin-top:8px; opacity:.85 }
+.content{ padding:18px 20px; min-height:100%; }
+.content > * { max-width: 100%; }
+
+/* ====== Modern admin table (match demo) ====== */
+.content .page-head{
+  display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:16px;
+}
+.content .page-head h2{ margin:0; font-size:20px; font-weight:600; color:#e8edf2; }
+.content .page-head .tools{ display:flex; gap:8px; align-items:center; }
+.content .page-head .tools input{
+  height:36px; padding:0 12px; border-radius:12px;
+  background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.10); color:#fff; outline:none;
+}
+.content .page-head .tools .btn{
+  height:36px; padding:0 14px; border-radius:12px; cursor:pointer;
+  border:1px solid rgba(255,255,255,.15); background:transparent; color:#e8edf2;
+}
+.content .page-head .tools .btn.primary{ background:#0ea5e9; border-color:transparent; color:#fff; }
+.content .page-head .tools .btn.primary:hover{ background:#38bdf8; }
+
+/* Card wrapper cho table */
+.content .table-card{
+  border:1px solid rgba(255,255,255,.10);
+  background:rgba(255,255,255,.05);
+  border-radius:16px; overflow:hidden;
+}
+
+/* Bảng mặc định biến thành kiểu demo */
+.content table{
+  width:100%; border-collapse:separate; border-spacing:0; color:#e8edf2;
+}
+.content thead th{
+  text-align:left; font-weight:600; font-size:14px;
+  background:rgba(255,255,255,.06); color:#cfd7e3;
+  padding:12px 14px; border-bottom:1px solid rgba(255,255,255,.10);
+}
+.content tbody td{
+  padding:12px 14px; font-size:14px; color:#dbe5f0; border-top:1px solid rgba(255,255,255,.06);
+}
+.content tbody tr:hover{ background:rgba(255,255,255,.05); }
+.content td.poster img{ width:52px; height:72px; object-fit:cover; border-radius:8px; display:block; }
+
+/* Badge trạng thái */
+.content td.status .badge{
+  display:inline-block; padding:4px 10px; border-radius:10px; font-size:12px;
+  border:1px solid rgba(255,255,255,.12); background:rgba(255,255,255,.06); color:#cfe6ff;
+}
+.content td.status .badge[data-status="RELEASED"]{
+  background:rgba(16,185,129,.15); color:#6ee7b7; border-color:rgba(16,185,129,.25);
+}
+.content td.status .badge[data-status="COMING_SOON"]{
+  background:rgba(245,158,11,.15); color:#fcd34d; border-color:rgba(245,158,11,.25);
+}
+
+/* Nút hành động */
+.content td.actions{ white-space:nowrap; }
+.content td.actions .btn{
+  height:30px; padding:0 10px; border-radius:8px; cursor:pointer; margin-right:8px;
+  border:1px solid rgba(255,255,255,.12); background:rgba(255,255,255,.06); color:#e8edf2;
+}
+.content td.actions .btn:hover{ background:rgba(255,255,255,.10); }
+.content td.actions .btn.danger{
+  color:#fecaca; border-color:rgba(248,113,113,.35); background:rgba(248,113,113,.08);
+}
+.content td.actions .btn.danger:hover{ background:rgba(248,113,113,.14); }
+
+.btn-logout{
+  margin-top: 8px;
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(239,68,68,.3);
+  background: #ef4444;
+  color: #fff;
+  cursor: pointer;
+  text-align: center;
+}
+.btn-logout:hover { filter: brightness(1.05); }

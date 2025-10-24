@@ -1,0 +1,13 @@
+<div class="page" *ngIf="data; else loading">
+  <h2>Chi tiết đơn #{{ data.id }}</h2>
+  <div class="card">
+    <div><b>Phim:</b> {{ data.movieTitle }}</div>
+    <div><b>Rạp:</b> {{ data.cinemaName }}</div>
+    <div><b>Suất:</b> {{ data.startTime | date:'HH:mm dd/MM/yyyy' }}</div>
+    <div><b>Số vé:</b> {{ data.quantity }}</div>
+    <div><b>Đơn giá:</b> {{ data.unitPrice | number:'1.0-0' }} đ</div>
+    <div><b>Tổng:</b> {{ data.totalPrice | number:'1.0-0' }} đ</div>
+    <div><b>Trạng thái:</b> {{ data.status }}</div>
+  </div>
+</div>
+<ng-template #loading><div class="page">Đang tải…</div></ng-template>

@@ -1,0 +1,70 @@
+<div class="wrap">
+  <h1>➕ Thêm lịch chiếu</h1>
+
+  <div class="grid">
+    <div class="card">
+      <h3>Chọn ngày</h3>
+      <input type="date" [(ngModel)]="date">
+      <small class="hint">yyyy-MM-dd</small>
+    </div>
+
+    <div class="card">
+      <h3>Chọn phim</h3>
+      <select [(ngModel)]="movieId">
+        <option *ngFor="let m of movies" [ngValue]="m.id">{{m.title}}</option>
+      </select>
+    </div>
+
+    <div class="card">
+      <h3>Chọn rạp</h3>
+      <select [(ngModel)]="cinemaId">
+        <option *ngFor="let c of cinemas" [ngValue]="c.id">{{c.name}}</option>
+      </select>
+    </div>
+
+    <!-- ➕ MỚI: Giá & Số vé -->
+    <div class="card">
+      <h3>Giá &amp; Số vé</h3>
+      <div class="row">
+        <label>Giá vé</label>
+        <input type="number" min="0" step="1000" [(ngModel)]="price" placeholder="85000" style="max-width:160px">
+        <span style="width:12px;display:inline-block"></span>
+        <label>Số vé</label>
+        <input type="number" min="1" step="1" [(ngModel)]="capacity" placeholder="50" style="max-width:120px">
+      </div>
+      <small class="hint">Áp dụng cho tất cả khung giờ bên dưới</small>
+    </div>
+  </div>
+
+  <div class="card mt">
+    <h3>Thêm khung giờ</h3>
+    <div class="row">
+      <input type="time" step="900" [(ngModel)]="newTime" style="max-width:220px">
+      <button class="btn" type="button" (click)="addTime()">Thêm giờ</button>
+    </div>
+    <div class="times">
+      <span class="chip" *ngFor="let t of times">{{t}}
+        <button type="button" (click)="removeTime(t)">×</button>
+      </span>
+    </div>
+  </div>
+
+  <div class="actions">
+    <a class="btn" routerLink="/admin/showtimes">← Danh sách</a>
+    <button class="btn primary" type="button" [disabled]="!canSave" (click)="save()">
+      {{ saving ? 'Đang lưu...' : 'Lưu lịch chiếu' }}
+    </button>
+  </div>
+
+  <div class="preview" *ngIf="rows.length">
+    <h3>Xem trước</h3>
+    <table>
+      <thead><tr><th>#</th><th>Ngày</th><th>Giờ</th><th>Phim</th><th>Rạp</th></tr></thead>
+      <tbody>
+        <tr *ngFor="let r of rows; trackBy: trackByIdx">
+          <td>{{r.idx}}</td><td>{{r.date}}</td><td>{{r.time}}</td><td>{{r.movie}}</td><td>{{r.cinema}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

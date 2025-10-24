@@ -1,0 +1,75 @@
+<div class="booking-wrap" *ngIf="!error(); else errTpl">
+  <div class="card" *ngIf="info(); else loadingTpl">
+    <div class="left">
+      <img [src]="info()!.posterUrl" (error)="onPosterError($event)"/>
+      <div class="meta">
+        <h2>{{ info()!.movieTitle }}</h2>
+        <p class="cinema">{{ info()!.cinemaName }}</p>
+        <p class="time">{{ info()!.startTime | date:'HH:mm, dd/MM/yyyy' }}</p>
+      </div>
+    </div>
+
+    <form class="right" [formGroup]="form" (ngSubmit)="submit()">
+      <div class="field">
+        <label>Số vé <span>*</span></label>
+        <div class="qty">
+          <button type="button" (click)="decQty()">−</button>
+          <input type="number" formControlName="quantity" min="1" max="10" />
+          <button type="button" (click)="incQty()">+</button>
+        </div>
+
+        <small class="error" *ngIf="form.controls.quantity.invalid && form.controls.quantity.touched">
+          Số vé 1–10
+        </small>
+      </div>
+
+      <div class="field">
+        <label>Mã giảm giá</label>
+        <div class="coupon">
+          <input type="text" formControlName="coupon" placeholder="SALE10, SALE50K"/>
+          <button type="button" (click)="applyCoupon()">Áp dụng</button>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Phương thức thanh toán</label>
+        <div class="pm">
+          <label><input type="radio" formControlName="paymentMethod" value="VNPAY" checked> VNPAY</label>
+          <label class="disabled"><input type="radio" disabled> (Sắp có) Momo</label>
+        </div>
+      </div>
+
+      <div class="field two">
+        <div>
+          <label>Họ tên (nếu chưa đăng nhập)</label>
+          <input type="text" formControlName="customerName" placeholder="Nguyễn Văn A"/>
+        </div>
+        <div>
+          <label>Email (nếu chưa đăng nhập)</label>
+          <input type="email" formControlName="customerEmail" placeholder="email@domain.com"/>
+        </div>
+      </div>
+
+      <div class="summary">
+        <div>Đơn giá: <b>{{ info()!.unitPrice | number:'1.0-0' }}</b> đ</div>
+        <div>Giảm: <b>{{ discount() ? ('-' + (discount() | number:'1.0-0')) : '0' }}</b> đ</div>
+        <div class="total">Tổng thanh toán: <b>{{ total() | number:'1.0-0' }}</b> đ</div>
+      </div>
+
+      <div class="actions">
+          <button type="submit" class="primary"
+                  [disabled]="submitting() || form.invalid || total() <= 0">
+            {{ submitting() ? 'Đang chuyển sang VNPAY…' : 'Thanh toán' }}
+          </button>
+          <a routerLink="/movies" class="ghost">Huỷ</a>
+        </div>
+    </form>
+  </div>
+</div>
+
+<ng-template #loadingTpl>
+  <div class="loading">Đang tải thông tin suất chiếu…</div>
+</ng-template>
+<ng-template #errTpl>
+  <div class="error-box">{{ error() }}</div>
+</ng-template>

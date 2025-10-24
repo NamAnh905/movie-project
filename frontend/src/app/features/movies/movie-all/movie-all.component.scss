@@ -1,0 +1,50 @@
+.container { max-width: 1200px; margin: 0 auto; padding: 0 16px; }
+.section { padding: 20px 0 12px; }
+
+.head { text-align: center; margin-bottom: 12px; }
+.head h2 {
+  font-size: 40px; font-weight: 800; color: #eaf0ff; text-transform: uppercase;
+}
+
+.grid { display: grid; gap: 16px; }
+.cols-5 { grid-template-columns: repeat(5, minmax(0,1fr)); }
+@media (max-width: 1200px) { .cols-5 { grid-template-columns: repeat(4, 1fr);} }
+@media (max-width: 992px)  { .cols-5 { grid-template-columns: repeat(3, 1fr);} }
+@media (max-width: 768px)  { .cols-5 { grid-template-columns: repeat(2, 1fr);} }
+@media (max-width: 480px)  { .cols-5 { grid-template-columns: 1fr; } }
+
+.card { background: rgba(255,255,255,.02); border: 1px solid rgba(255,255,255,.08); border-radius: 12px; overflow: hidden; }
+.card-movie .poster { position: relative; aspect-ratio: 2/3; overflow: hidden; }
+.card-movie img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.card-movie .meta { padding: 10px 12px 14px; }
+.card-movie h3 { font-size: 14px; font-weight: 700; color: #e8eef9; margin: 4px 0 0; }
+.card-movie h3 a { color: inherit; text-decoration: none; }
+.card-movie h3 a:hover { color: #fff; }
+.card-movie .sub { font-size: 12px; color: #9fb0c6; }
+
+.card-movie .hover-overlay{
+  position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+  background: linear-gradient(to top, rgba(10,16,28,.65), rgba(10,16,28,.18));
+  opacity: 0; pointer-events: none; transition: opacity .2s ease;
+}
+.card-movie:hover .hover-overlay{ opacity: 1; pointer-events: auto; }
+.btn.detail{
+  text-decoration: none; font-weight: 800;
+  padding: 10px 16px; border-radius: 999px;
+  background: #0ea5e9; color: #08111e; border: none; cursor: pointer;
+  box-shadow: 0 6px 18px rgba(14,165,233,.35);
+}
+.btn.detail:hover{ filter: brightness(1.05); }
+
+.empty { color:#9fb0c6; padding: 12px 0; text-align:center; }
+
+/* pager */
+.pager { display: flex; gap: 8px; justify-content: center; align-items: center; margin: 14px 0 6px; }
+.pager .nav, .pager .page {
+  height: 38px; min-width: 38px; padding: 0 12px;
+  border-radius: 999px; border: 1px solid rgba(255,255,255,.15);
+  background: rgba(255,255,255,.06); color: #eaf0ff; font-weight: 700;
+  cursor: pointer; transition: all .2s ease;
+}
+.pager .page.active { background: #7c3aed; border-color: transparent; }
+.pager .nav:disabled { opacity: .35; cursor: not-allowed; }

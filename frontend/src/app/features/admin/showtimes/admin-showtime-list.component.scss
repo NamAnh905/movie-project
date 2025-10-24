@@ -1,0 +1,53 @@
+.wrap { max-width: 1100px; margin: 0 auto; padding: 24px 16px 60px; }
+h1 { margin: 0 0 16px; }
+.grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; }
+.card { background: #111c33; color:#e8eefc; border: 1px solid #22325b; border-radius: 14px; padding: 14px; }
+.card h3 { margin: 0 0 8px; font-size: 14px; text-transform: uppercase; letter-spacing: .4px; color: #d7e3ff; }
+small.hint { color: #a9bbd8; }
+select, input[type="date"], input[type="time"] { width:100%; padding:10px 12px; border-radius:10px; border:1px solid #324a7b; background:#1b2a4e; color:#e7efff; }
+.mt { margin-top: 16px; }
+.row { display:flex; gap:8px; align-items:center; }
+.btn { padding:10px 14px; border-radius:10px; border:1px solid #2f4475; background:#16264a; color:#dfe8ff; cursor:pointer; }
+.btn.primary { background:#ffe500; color:#0b0b0b; border-color:#d2c100; font-weight:800; }
+.times { display:flex; flex-wrap:wrap; gap:8px; margin-top:10px; }
+.chip { padding:6px 10px; border-radius:999px; background:#16264a; border:1px solid #2f4475; }
+.chip button { margin-left:6px; background:none; border:none; color:#bcd0ff; cursor:pointer; }
+.actions { display:flex; gap:10px; justify-content:flex-end; margin-top:16px; }
+.preview { margin-top: 16px; }
+table { width:100%; border-collapse:collapse; background:#111c33; border:1px solid #22325b; border-radius:14px; overflow:hidden; }
+th, td { padding:12px 14px; border-bottom:1px solid #22325b; text-align:left; }
+th { background:#18274a; }
+/* ===== Pagination ===== */
+.pager {
+  margin: 12px 0 6px;
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.pager .pg {
+  min-width: 34px;
+  height: 34px;
+  padding: 0 10px;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,.18);
+  background: rgba(255,255,255,.06);
+  color: #eaf0ff;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all .15s ease;
+}
+.pager .pg:hover { background: rgba(255,255,255,.12); }
+.pager .pg.active {
+  background: rgba(124,58,237,.28);
+  border-color: rgba(124,58,237,.45);
+}
+.pager .pg:disabled { opacity: .45; cursor: not-allowed; }
+
+.pager .info {
+  margin-left: 8px;
+  color: #9fb0c6;
+  font-size: 13px;
+}

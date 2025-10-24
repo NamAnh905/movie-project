@@ -1,0 +1,102 @@
+<!-- ===== Banner Slider (BEGIN) ===== -->
+<section class="home-banner"
+         (mouseenter)="stopBanner()" (mouseleave)="startBanner()"
+         (touchstart)="onTouchStart($event)" (touchend)="onTouchEnd($event)">
+
+  <div class="slides">
+    <a *ngFor="let b of banners; index as i"
+       class="slide" [class.active]="i===currentBanner"
+       [routerLink]="b.link || null" [attr.aria-hidden]="i!==currentBanner">
+      <img [src]="b.imageUrl" [alt]="b.alt || 'Banner'" loading="lazy">
+    </a>
+  </div>
+
+  <button class="nav prev" (click)="prevBanner()" aria-label="Prev">‹</button>
+  <button class="nav next" (click)="nextBanner()" aria-label="Next">›</button>
+
+  <div class="dots">
+    <button *ngFor="let _ of banners; index as i"
+            (click)="goBanner(i)" [class.active]="i===currentBanner"
+            [attr.aria-label]="'Go to slide ' + (i+1)"></button>
+  </div>
+</section>
+
+<!-- KHỐI: PHIM ĐANG CHIẾU -->
+<section class="container section">
+  <header class="section-head">
+    <h2>PHIM ĐANG CHIẾU</h2>
+  </header>
+
+  <div class="carousel">
+    <button class="arrow left" (click)="prevNow()" [disabled]="pageNow===0 || isAnimatingNow" aria-label="Prev">‹</button>
+
+    <div class="grid cols-4 scroller"
+         [class.out-left]="animNow==='out-left'"
+         [class.in-right]="animNow==='in-right'"
+         [class.out-right]="animNow==='out-right'"
+         [class.in-left]="animNow==='in-left'">
+      <article *ngFor="let m of nowVisible" class="card card-movie">
+        <div class="poster">
+          <img [src]="m.posterUrl" [alt]="m.title" loading="lazy" />
+          <div class="hover-overlay">
+            <a class="btn detail" [routerLink]="['/movies', m.id]">XEM CHI TIẾT</a>
+          </div>
+        </div>
+        <div class="meta">
+          <div class="sub" *ngIf="m.releaseDate">Khởi chiếu: {{ m.releaseDate | date:'dd/MM/yyyy' }}</div>
+          <h3><a [routerLink]="['/movies', m.id]">{{ m.title }}</a></h3>
+        </div>
+      </article>
+    </div>
+
+    <button class="arrow right" (click)="nextNow()" [disabled]="pageNow>=nowTotalPages-1 || isAnimatingNow" aria-label="Next">›</button>
+  </div>
+
+  <div class="empty" *ngIf="!loading && nowPlaying.length === 0">Không có phim đang chiếu.</div>
+
+  <div class="foot">
+    <button class="btn more" (click)="viewMore('RELEASED')">XEM THÊM</button>
+  </div>
+</section>
+
+<!-- KHỐI: PHIM SẮP CHIẾU -->
+<section class="container section">
+  <header class="section-head">
+    <h2>PHIM SẮP CHIẾU</h2>
+  </header>
+
+  <div class="carousel">
+    <button class="arrow left" (click)="prevSoon()" [disabled]="pageSoon===0 || isAnimatingSoon" aria-label="Prev">‹</button>
+
+    <div class="grid cols-4 scroller"
+         [class.out-left]="animSoon==='out-left'"
+         [class.in-right]="animSoon==='in-right'"
+         [class.out-right]="animSoon==='out-right'"
+         [class.in-left]="animSoon==='in-left'">
+      <article *ngFor="let m of soonVisible" class="card card-movie">
+        <div class="poster soon">
+          <img [src]="m.posterUrl" [alt]="m.title" loading="lazy" />
+          <div class="hover-overlay">
+            <a class="btn detail" [routerLink]="['/movies', m.id]">XEM CHI TIẾT</a>
+          </div>
+        </div>
+        <div class="meta">
+          <div class="sub" *ngIf="m.releaseDate">Khởi chiếu: {{ m.releaseDate | date:'dd/MM/yyyy' }}</div>
+          <h3><a [routerLink]="['/movies', m.id]">{{ m.title }}</a></h3>
+        </div>
+      </article>
+    </div>
+
+    <button class="arrow right" (click)="nextSoon()" [disabled]="pageSoon>=soonTotalPages-1 || isAnimatingSoon" aria-label="Next">›</button>
+  </div>
+
+  <div class="empty" *ngIf="!loading && comingSoon.length === 0">Không có phim sắp chiếu.</div>
+
+  <div class="foot">
+    <button class="btn more" (click)="viewMore('COMING_SOON')">XEM THÊM</button>
+  </div>
+
+  <section class="container error" *ngIf="errorMsg && !loading">
+    {{ errorMsg }}
+  </section>
+</section>

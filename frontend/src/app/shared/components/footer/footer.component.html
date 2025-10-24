@@ -1,0 +1,54 @@
+<footer class="site-footer">
+  <div class="container">
+    <!-- BRAND + SLOGAN + CONTACT -->
+    <div class="col brand">
+      <a class="brand-link" routerLink="/" aria-label="Trang chủ">
+        <div class="brand-text">
+          <img class="logo" src="assets/logo/4scinema.svg.png" alt="4SCinema" />
+          <div class="slogan">YOUR SATISFACTION IS OUR JOY !</div>
+        </div>
+      </a>
+
+      <div class="contact">
+        <span class="label">Liên hệ với chúng tôi:</span>
+        <div class="icons">
+          <a href="https://www.facebook.com/share/1D4TYbDfrJ/?mibextid=wwXIfr" aria-label="Facebook" rel="noopener">f</a>
+          <a href="#" aria-label="Instagram" rel="noopener">ig</a>
+          <a href="https://discord.gg/HTHEDS7H" aria-label="Discord" rel="noopener">dc</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- ACCOUNT -->
+    <div class="col">
+      <h4>TÀI KHOẢN</h4>
+      <ul class="links">
+        <li><a (click)="goLogin()">Đăng nhập</a></li>
+        <li><a (click)="goRegister()">Đăng ký</a></li>
+      </ul>
+    </div>
+
+    <!-- WATCH -->
+    <div class="col">
+      <h4>XEM PHIM</h4>
+      <ul class="links">
+        <li><a (click)="goNow()">Phim đang chiếu</a></li>
+        <li><a (click)="goSoon()">Phim sắp chiếu</a></li>
+      </ul>
+    </div>
+
+    <!-- CINEMA SYSTEM -->
+    <div class="col">
+      <h4>HỆ THỐNG RẠP</h4>
+      <ul class="links">
+        <li *ngFor="let c of cinemas()">
+          <a (click)="openCinema(c)">{{ c.name }}</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="legal">
+    <div class="legal-left">© {{ currentYear }} 4SCinema. All rights reserved.</div>
+    <div class="legal-right"><a class="policy" routerLink="/privacy">Chính sách bảo mật</a></div>
+  </div>
+</footer>

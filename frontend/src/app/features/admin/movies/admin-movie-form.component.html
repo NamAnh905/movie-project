@@ -1,0 +1,78 @@
+<h2>{{ id ? 'Sửa phim' : 'Thêm phim' }}</h2>
+
+<form [formGroup]="f" class="form" (ngSubmit)="save()">
+  <div class="grid">
+    <label>Tiêu đề
+      <input formControlName="title">
+    </label>
+
+    <!-- Poster: nhập URL hoặc chọn file -->
+    <label>Poster URL
+      <input formControlName="posterUrl" placeholder="https://...">
+      <input type="file" accept="image/*" (change)="onPosterPicked($event)" />
+      <small *ngIf="uploading">Đang tải ảnh lên...</small>
+      <img *ngIf="posterPreview" [src]="posterPreview" alt="preview"
+           style="max-height:80px;margin-top:6px;border-radius:8px;">
+    </label>
+
+    <label>Thời lượng (phút)
+      <input type="number" formControlName="duration">
+    </label>
+
+    <label>Trạng thái
+      <select formControlName="status">
+        <option value="RELEASED">RELEASED</option>
+        <option value="COMING_SOON">COMING_SOON</option>
+      </select>
+    </label>
+
+    <label>Ngày khởi chiếu
+      <input type="date" formControlName="releaseDate">
+    </label>
+
+    <label>Ngôn ngữ
+      <input formControlName="language">
+    </label>
+
+    <label>Quốc gia
+      <input formControlName="country">
+    </label>
+
+    <label>Giới hạn tuổi
+      <input formControlName="ageRating">
+    </label>
+
+    <label class="full">Mô tả
+      <textarea rows="5" formControlName="description"></textarea>
+    </label>
+
+    <!-- ======================= NEW: THỂ LOẠI (multi-select) ======================= -->
+    <div class="full">
+      <div class="field-title">Thể loại</div>
+
+      <!-- Checkbox grid -->
+      <div class="checkbox-grid">
+        <label class="chk" *ngFor="let g of genres; trackBy: trackById">
+          <input type="checkbox"
+                 [checked]="f.value.genreIds?.includes(g.id)"
+                 (change)="onToggleGenre(g.id, $event)">
+          <span>{{ g.name }}</span>
+        </label>
+      </div>
+
+      <!-- Chips hiển thị đã chọn -->
+      <div class="chips" *ngIf="f.value.genreIds?.length">
+        <span class="chip"
+              *ngFor="let g of genres"
+              [hidden]="!f.value.genreIds?.includes(g.id)">{{ g.name }}</span>
+      </div>
+    </div>
+    <!-- ========================================================================== -->
+  </div>
+
+  <div class="actions">
+    <button type="submit" class="primary" [disabled]="f.invalid || uploading">Lưu</button>
+    <a class="btn" routerLink="/admin/movies">Hủy</a>
+    <a class="btn outline" *ngIf="id" [routerLink]="['/movies', id]">Xem ngoài trang khách</a>
+  </div>
+</form>

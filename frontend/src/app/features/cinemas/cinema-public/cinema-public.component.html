@@ -1,0 +1,106 @@
+<div class="wrap" *ngIf="cinemas().length; else noCinema">
+  <!-- HERO -->
+  <div class="hero">
+    <div class="thumb">
+      <img src="assets/posters/Cinemas_banner.jpg" alt="">
+    </div>
+
+    <div class="info">
+      <h1>{{ selectedCinema()?.name || 'Rạp chiếu' }}</h1>
+      <div class="addr">📍 {{ selectedCinema()?.address || 'Đang cập nhật địa chỉ' }}</div>
+    </div>
+
+    <div class="ctrl">
+      <label>Chọn rạp</label>
+      <!-- IMPORTANT: đọc từ signal và set lại bằng ngModelChange -->
+      <select [ngModel]="selectedCinemaId()" (ngModelChange)="onSelectCinema($event)">
+        <option *ngFor="let c of cinemas()" [value]="c.id">{{ c.name }}</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- TABS -->
+  <div class="tabs">
+    <button class="tab" [class.active]="activeTab()==='now'"  (click)="activeTab.set('now')">PHIM ĐANG CHIẾU</button>
+    <button class="tab" [class.active]="activeTab()==='soon'" (click)="activeTab.set('soon')">PHIM SẮP CHIẾU</button>
+  </div>
+
+  <!-- NOW -->
+  <section class="panel" *ngIf="activeTab()==='now'">
+    <!-- ĐÃ BỎ KHỐI 'Ngày' -->
+
+    <div *ngIf="loading()" class="hint">Đang tải dữ liệu…</div>
+    <div *ngIf="!loading() && groupsNow().length===0" class="hint">Chưa có phim đang chiếu.</div>
+
+    <div class="grid" *ngIf="groupsNow().length">
+      <article class="card" *ngFor="let g of groupsNow(); trackBy: trackByMovie">
+        <div class="poster">
+          <img [src]="posterOf(g)" [alt]="movieTitle(g)" (error)="imgFallback($event)" />
+        </div>
+
+        <div class="body">
+          <h3 class="title">{{g.movie.title}}</h3>
+          <div class="meta">
+            <span *ngIf="g.movie.age_rating">Độ tuổi: {{g.movie.age_rating}}</span>
+            <span *ngIf="g.movie.duration"> • {{g.movie.duration}}′</span>
+          </div>
+
+          <div class="times" *ngIf="g.showtimes?.length">
+            <button class="chip" *ngFor="let st of g.showtimes; trackBy: trackBySt">
+              {{ st.start_time | date:'HH:mm' }}
+            </button>
+          </div>
+
+          <a class="link" [routerLink]="['/movies', g.movie.id]">Xem chi tiết</a>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- SOON -->
+  <section class="panel" *ngIf="activeTab()==='soon'">
+    <div *ngIf="loading()" class="hint">Đang tải dữ liệu…</div>
+    <div *ngIf="!loading() && groupsSoon().length===0" class="hint">Chưa có phim sắp chiếu.</div>
+
+    <div class="grid" *ngIf="groupsSoon().length">
+      <article class="card" *ngFor="let g of groupsSoon(); trackBy: trackByMovie">
+        <div class="poster">
+          <img [src]="posterOf(g)" [alt]="movieTitle(g)" (error)="imgFallback($event)" />
+        </div>
+        <div class="body">
+          <h3 class="title">{{g.movie.title}}</h3>
+          <div class="meta">
+            <span *ngIf="g.movie.age_rating">Độ tuổi: {{g.movie.age_rating}}</span>
+            <span *ngIf="g.movie.duration"> • {{g.movie.duration}}′</span>
+          </div>
+
+          <!-- Có lịch chiếu thì hiện giờ, chưa có thì ghi chú -->
+          <div class="times" *ngIf="g.showtimes?.length; else noTimeSoon">
+            <button class="chip" *ngFor="let st of g.showtimes; trackBy: trackBySt">
+              {{ st.start_time | date:'HH:mm' }}
+            </button>
+          </div>
+          <ng-template #noTimeSoon>
+            <div class="hint">Chưa có lịch chiếu</div>
+          </ng-template>
+
+          <a class="link" [routerLink]="['/movies', g.movie.id]">Xem chi tiết</a>
+        </div>
+      </article>
+    </div>
+  </section>
+
+
+  <!-- PRICE -->
+  <section class="panel" *ngIf="activeTab()==='price'">
+    <div class="price">
+      <div class="hint">Bảng giá sẽ lấy từ BE (endpoint tuỳ bạn triển khai).</div>
+    </div>
+  </section>
+</div>
+
+<ng-template #noCinema>
+  <div class="empty">
+    Không tìm thấy rạp công khai. Hãy kiểm tra API <code>/api/cinemas/public</code>.
+  </div>
+</ng-template>

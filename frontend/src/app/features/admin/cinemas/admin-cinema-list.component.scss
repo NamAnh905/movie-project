@@ -1,0 +1,145 @@
+:host {
+  display: block;
+}
+
+.bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+
+  h2 { margin: 0; }
+
+  .actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    .divider {
+      width: 1px;
+      height: 28px;
+      opacity: .2;
+      background: #fff;
+      margin: 0 4px 0 2px;
+    }
+  }
+}
+
+input, select {
+  height: 40px;
+  background: #111823;
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 10px;
+  color: #e8edf2;
+  padding: 0 12px;
+  outline: none;
+
+  &:focus {
+    border-color: rgba(30,136,229,.65);
+    box-shadow: 0 0 0 3px rgba(30,136,229,.15);
+  }
+}
+
+.btn, button, .ops a.edit, .primary {
+  min-width: 80px;
+  height: 40px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,.15);
+  background: #1b2433;
+  color: #e8edf2;
+  padding: 0 12px;
+  font-weight: 600;
+  letter-spacing: .3px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  text-decoration: none;
+
+  &:disabled {
+    opacity: .5;
+    cursor: not-allowed;
+  }
+}
+
+.primary {
+  background: #1e88e5;
+  border-color: #1e88e5;
+
+  &:hover { filter: brightness(1.05); }
+}
+
+.tbl {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 8px;
+
+  thead th {
+    text-align: left;
+    font-weight: 600;
+    padding: 10px 12px;
+    opacity: .9;
+  }
+
+  tbody tr {
+    background: #141a24;
+    transition: transform .12s ease, background .12s ease;
+
+    &:hover { background: #182131; }
+
+    td {
+      padding: 8px 12px;
+      vertical-align: middle;
+    }
+
+    td input, td select {
+      width: 100%;
+    }
+  }
+}
+
+.ops {
+  display: flex;
+  gap: 8px;
+
+  .edit {
+    background: #2e7d32;
+    border-color: #2e7d32;
+  }
+
+  .danger {
+    background: #c62828;
+    border-color: #c62828;
+  }
+
+  .edit:hover, .danger:hover {
+    filter: brightness(1.05);
+  }
+}
+
+.empty {
+  padding: 32px 12px;
+  text-align: center;
+  opacity: .8;
+}
+
+.pager {
+  margin-top: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  .controls {
+    display: flex;
+    gap: 6px;
+
+    .num {
+      min-width: 40px;
+    }
+
+    .active {
+      background: #1e88e5;
+      border-color: #1e88e5;
+    }
+  }
+}

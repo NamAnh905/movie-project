@@ -1,0 +1,54 @@
+<div class="wrap" *ngIf="data as d">
+  <h2>Đơn #{{ d.id }}</h2>
+  <div class="grid">
+    <div class="card">
+      <div class="title">Thông tin đơn</div>
+      <ul class="kv">
+        <li><span>Trạng thái</span><b>{{ d.status }}</b></li>
+        <li><span>Khách</span><b>{{ d.customerName || '—' }}</b></li>
+        <li><span>Email</span><b>{{ d.customerEmail || '—' }}</b></li>
+        <li><span>Số vé</span><b>{{ d.quantity }}</b></li>
+        <li><span>Đơn giá</span><b>{{ vnd(d.unitPrice) }} đ</b></li>
+        <li><span>Tổng tiền</span><b>{{ vnd(d.totalPrice) }} đ</b></li>
+        <li><span>Tạo lúc</span><b>{{ d.createdAt | date:'dd/MM/yyyy HH:mm:ss' }}</b></li>
+        <li><span>Thanh toán</span><b>{{ d.paidAt ? (d.paidAt | date:'dd/MM/yyyy HH:mm:ss') : '—' }}</b></li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="title">Thanh toán</div>
+      <ul class="kv">
+        <li><span>Phương thức</span><b>{{ d.paymentMethod || '—' }}</b></li>
+        <li><span>Mã giao dịch</span><b>{{ d.paymentTxnId || '—' }}</b></li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="title">Suất chiếu</div>
+      <ul class="kv">
+        <li><span>Rạp</span><b>#{{ d.cinemaId }} – {{ d.cinemaName }}</b></li>
+        <li><span>Phim</span><b>#{{ d.movieId }} – {{ d.movieTitle }}</b></li>
+        <li><span>Giờ chiếu</span><b>{{ d.startTime | date:'dd/MM/yyyy HH:mm' }}</b></li>
+        <li><span>Giá vé hiện tại</span><b>{{ vnd(d.showtimePrice) }} đ</b></li>
+        <li><span>Showtime ID</span><b>{{ d.showtimeId }}</b></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="title">Lịch sử trạng thái / log thanh toán</div>
+    <div *ngIf="!d.timeline?.length" class="muted">Không có log</div>
+    <ul class="timeline" *ngIf="d.timeline?.length">
+      <li *ngFor="let e of d.timeline">
+        <b>{{ e.type }}</b> • <span>{{ e.at | date:'dd/MM/yyyy HH:mm:ss' }}</span>
+        <div class="note">{{ e.note }}</div>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div class="wrap" *ngIf="!data && !loading && !error">
+  Không tìm thấy đơn.
+</div>
+<div class="error" *ngIf="error">{{ error }}</div>
+<div class="muted" *ngIf="loading">Đang tải…</div>

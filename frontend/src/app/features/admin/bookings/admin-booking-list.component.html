@@ -1,0 +1,68 @@
+<div class="wrap">
+  <h2>Đơn đặt vé</h2>
+
+  <div class="filters">
+    <label>Từ</label><input type="date" [(ngModel)]="from" (change)="load(0)">
+    <label>Đến</label><input type="date" [(ngModel)]="to" (change)="load(0)">
+
+    <label>Rạp</label><input type="number" [(ngModel)]="cinemaId" (change)="load(0)" placeholder="cinemaId">
+    <label>Phim</label><input type="number" [(ngModel)]="movieId" (change)="load(0)" placeholder="movieId">
+    <label>Suất</label><input type="number" [(ngModel)]="showtimeId" (change)="load(0)" placeholder="showtimeId">
+
+    <label>Trạng thái</label>
+    <select [(ngModel)]="status" (change)="load(0)">
+      <option value="">(Tất cả)</option>
+      <option>PENDING</option><option>CONFIRMED</option><option>PAID</option>
+      <option>FAILED</option><option>CANCELLED</option><option>REFUNDED</option>
+    </select>
+
+    <label>Thanh toán</label>
+    <select [(ngModel)]="paymentMethod" (change)="load(0)">
+      <option value="">(Tất cả)</option>
+      <option>VNPAY</option>
+      <option>OFFLINE</option>
+    </select>
+
+    <input class="q" [(ngModel)]="q" (keyup.enter)="load(0)" placeholder="Email / tên / mã GD">
+    <button (click)="load(0)">Lọc</button>
+  </div>
+
+  <div *ngIf="loading" class="muted">Đang tải...</div>
+  <div *ngIf="error" class="error">{{ error }}</div>
+
+  <table class="tbl" *ngIf="res?.items?.length">
+    <thead>
+      <tr>
+        <th>Thời gian</th><th>Rạp</th><th>Phim</th><th>Suất</th>
+        <th>Khách</th><th>Trạng thái</th><th>Tổng</th><th>Thanh toán</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let it of res!.items" (click)="goto(it)">
+        <td>
+          <div>{{ it.createdAt | date:'dd/MM HH:mm' }}</div>
+          <small class="muted">ID #{{ it.id }}</small>
+        </td>
+        <td>{{ it.cinemaName }}</td>
+        <td>{{ it.movieTitle }}</td>
+        <td>{{ it.startTime | date:'dd/MM HH:mm' }}</td>
+        <td>
+          <div>{{ it.customerName || '—' }}</div>
+          <small class="muted">{{ it.customerEmail || '' }}</small>
+        </td>
+        <td>{{ it.status }}</td>
+        <td class="num">{{ vnd(it.totalPrice) }} đ</td>
+        <td>
+          <div>{{ it.paymentMethod || '—' }}</div>
+          <small class="muted">{{ it.paymentTxnId || '' }}</small>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="pager" *ngIf="res">
+    <button [disabled]="res.page===0" (click)="load(res.page-1)">‹ Trước</button>
+    <span>Trang {{ res.page+1 }} / {{ res.totalPages || 1 }}</span>
+    <button [disabled]="res.page+1>=res.totalPages" (click)="load(res.page+1)">Sau ›</button>
+  </div>
+</div>

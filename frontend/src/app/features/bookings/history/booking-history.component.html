@@ -1,0 +1,38 @@
+<section class="history">
+  <h2>Lịch sử đặt vé</h2>
+
+  <div *ngIf="error" class="alert">{{ error }}</div>
+
+  <ul class="list" *ngIf="!error && items?.length; else empty">
+    <li class="booking-card" *ngFor="let b of items; trackBy: trackById">
+      <div class="card-main">
+        <div class="card-left">
+          <div class="id">#{{ b.id }}</div>
+          <h3 class="title">{{ b.movieTitle }}</h3>
+          <div class="cinema">{{ b.cinemaName }}</div>
+
+          <div class="meta">
+            <span class="chip">
+              ⏰ {{ b.startTime | date:'HH:mm dd/MM/yyyy' }}
+            </span>
+            <span class="chip">
+              x{{ b.quantity }}
+            </span>
+            <span class="chip">
+              {{ b.totalPrice | number:'1.0-0' }} đ
+            </span>
+          </div>
+        </div>
+
+        <div class="card-right">
+          <span class="badge" [ngClass]="statusClass(b.status)">{{ b.status }}</span>
+          <button type="button" class="btn" (click)="open(b.id)">Xem chi tiết</button>
+        </div>
+      </div>
+    </li>
+  </ul>
+
+  <ng-template #empty>
+    <div class="empty">Chưa có đơn nào.</div>
+  </ng-template>
+</section>

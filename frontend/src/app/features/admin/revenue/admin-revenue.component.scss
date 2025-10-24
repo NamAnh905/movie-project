@@ -1,0 +1,25 @@
+.wrap { padding: 16px; color: #eaeaea; }
+h2 { margin: 0 0 12px; }
+.filters { display: flex; gap: 12px; align-items: center; flex-wrap: wrap;
+  label { opacity: .9; }
+  input, select { background: #1f1f1f; color: #eaeaea; border: 1px solid #333; padding: 6px 8px; border-radius: 8px; }
+  .chk { display: flex; gap: 6px; align-items: center; }
+}
+.loading, .error { margin-top: 8px; }
+.error { color: #ff6b6b; }
+
+.kpis { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 16px 0; }
+.kpi { background: #141414; border: 1px solid #2a2a2a; border-radius: 12px; padding: 14px; }
+.kpi-label { font-size: 13px; opacity: .8; }
+.kpi-value { font-size: 22px; font-weight: 700; margin-top: 6px; }
+
+.card { background: #141414; border: 1px solid #2a2a2a; border-radius: 12px; padding: 12px; margin-top: 12px; }
+.card-title { font-weight: 600; margin-bottom: 8px; }
+
+.chart-box { position: relative; width: 100%; height: 320px; }
+
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+@media (max-width: 900px) {
+  .kpis { grid-template-columns: 1fr; }
+  .grid2 { grid-template-columns: 1fr; }
+}

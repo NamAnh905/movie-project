@@ -1,0 +1,28 @@
+.wrap { display: grid; gap: 12px; }
+.head {
+  display: flex; align-items: center; justify-content: space-between;
+  h2 { margin: 0; }
+}
+.card {
+  background: #141a24; border: 1px solid rgba(255,255,255,.08);
+  border-radius: 14px; padding: 16px; display: grid; gap: 14px;
+}
+.row { display: grid; gap: 8px; }
+label { font-weight: 600; opacity: .9;
+  span { color: #f05; }
+}
+input, select {
+  height: 44px; background: #111823; border: 1px solid rgba(255,255,255,.12);
+  border-radius: 10px; color: #e8edf2; padding: 0 12px; outline: none;
+  &:focus { border-color: rgba(30,136,229,.65); box-shadow: 0 0 0 3px rgba(30,136,229,.15); }
+}
+.err { color: #ffb4b4; font-size: 12px; }
+
+.btn, .primary {
+  min-width: 90px; height: 40px; border-radius: 10px; border: 1px solid rgba(255,255,255,.15);
+  background: #1b2433; color: #e8edf2; padding: 0 14px; font-weight: 600; letter-spacing: .3px;
+  display: inline-flex; align-items: center; justify-content: center; cursor: pointer; text-decoration: none;
+}
+.primary { background: #1e88e5; border-color: #1e88e5; &:hover { filter: brightness(1.05); } }
+
+.actions { display: flex; gap: 8px; justify-content: flex-end; }

@@ -1,0 +1,58 @@
+<section class="detail container" *ngIf="!loading && movie">
+  <div class="layout">
+    <!-- LEFT: POSTER -->
+    <div class="left">
+      <img class="poster"
+           [src]="movie.posterUrl || '/assets/placeholder-poster.webp'"
+           [alt]="movie.title || movie.name" />
+    </div>
+
+    <!-- RIGHT: INFO -->
+    <div class="right">
+      <h1 class="title">
+        {{ movie.title || movie.name }}
+      </h1>
+
+      <div class="badges">
+        <span class="badge age" *ngIf="movie.ageRating">{{ movie.ageRating }}</span>
+        <span class="badge status" *ngIf="movie.status || movie.movieStatus">
+          {{ (movie.status || movie.movieStatus) | titlecase }}
+        </span>
+      </div>
+
+      <div class="meta">
+        <div class="row" *ngIf="movie.duration"><span class="k">Thời lượng</span><span class="v">{{ movie.duration }} phút</span></div>
+        <div class="row" *ngIf="movie.releaseDate"><span class="k">Khởi chiếu</span><span class="v">{{ movie.releaseDate | date:'dd/MM/yyyy' }}</span></div>
+        <div class="row" *ngIf="movie.language"><span class="k">Ngôn ngữ</span><span class="v">{{ movie.language }}</span></div>
+        <div class="row" *ngIf="movie.country"><span class="k">Quốc gia</span><span class="v">{{ movie.country }}</span></div>
+
+        <div class="row" *ngIf="movie.genres?.length || movie.genreNames?.length">
+          <span class="k">Thể loại</span>
+          <span class="v chips">
+            <span class="chip" *ngFor="let g of (movie.genres || movie.genreNames)">{{ g.name || g }}</span>
+          </span>
+        </div>
+
+        <div class="row" *ngIf="movie.director"><span class="k">Đạo diễn</span><span class="v">{{ movie.director }}</span></div>
+        <div class="row" *ngIf="movie.cast || movie.actors">
+          <span class="k">Diễn viên</span>
+          <span class="v">{{ movie.cast || movie.actors }}</span>
+        </div>
+      </div>
+
+      <div class="desc" *ngIf="movie.description">
+        <h3>Nội dung</h3>
+        <p>{{ movie.description }}</p>
+      </div>
+
+      <div class="actions">
+        <a class="btn primary" [routerLink]="['/movies', movie.id, 'showtimes']">Xem lịch chiếu</a>
+
+        <!-- ĐỔI: dùng (click) gọi goBack() -->
+        <button type="button" class="btn" (click)="goBack()">← Quay lại</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="container" *ngIf="loading">Đang tải…</section>

@@ -1,0 +1,22 @@
+<div class="page">
+  <h2 *ngIf="status==='PAID'">Thanh toán thành công 🎉</h2>
+  <h2 *ngIf="status!=='PAID'">Thanh toán không thành công</h2>
+
+  <div *ngIf="loading" class="box">Đang tải thông tin đơn…</div>
+  <div *ngIf="error" class="box error">{{ error }}</div>
+
+  <div *ngIf="!loading && data" class="card">
+    <div><b>Mã đơn:</b> #{{ data.id }}</div>
+    <div><b>Phim:</b> {{ data.movieTitle }}</div>
+    <div><b>Rạp:</b> {{ data.cinemaName }}</div>
+    <div><b>Suất:</b> {{ data.startTime | date:'HH:mm dd/MM/yyyy' }}</div>
+    <div><b>Số vé:</b> {{ data.quantity }}</div>
+    <div><b>Tổng:</b> {{ data.totalPrice | number:'1.0-0' }} đ</div>
+    <div><b>Trạng thái:</b> {{ data.status }}</div>
+  </div>
+
+  <div class="actions">
+    <button class="primary" (click)="toDetail()" [disabled]="!id">Xem chi tiết đơn</button>
+    <a class="ghost" (click)="toHistory()">Về lịch sử</a>
+  </div>
+</div>

@@ -1,0 +1,38 @@
+<div class="wrap">
+  <div class="topbar">
+    <h2>Quản lý người dùng</h2>
+    <div class="searchbar">
+      <input [(ngModel)]="q" (keyup.enter)="load()" placeholder="Tìm theo username, email..." />
+      <button class="btn ghost" (click)="load()">{{ loading ? 'Đang tải...' : 'Làm mới' }}</button>
+    </div>
+  </div>
+
+  <div class="table">
+    <div class="thead">
+      <div>Username</div>
+      <div>Họ tên</div>
+      <div>Email</div>
+      <div>Trạng thái</div>
+      <div>Role</div>
+      <div>Thao tác</div>
+    </div>
+
+    <div class="row" *ngFor="let u of items">
+      <div>{{u.username}}</div>
+      <div>{{u.fullName || '—'}}</div>
+      <div>{{u.email || '—'}}</div>
+      <div><span class="badge" [class.ok]="u.status==='ACTIVE'">{{u.status}}</span></div>
+      <div>
+        <select [(ngModel)]="u._roleDraft">
+          <option value="USER">USER</option>
+          <option value="ADMIN">ADMIN</option>
+        </select>
+      </div>
+      <div>
+        <button class="btn primary" (click)="saveRole(u)" [disabled]="u._saving || u._roleDraft===u.role">
+          {{ u._saving ? 'Đang lưu...' : 'Lưu' }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

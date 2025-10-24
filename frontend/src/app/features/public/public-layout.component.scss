@@ -1,0 +1,18 @@
+
+.public-shell{
+  /* Full-bleed content for user area */
+  width: 100%;
+  margin: 0;
+  padding: 16px 20px;
+  min-height: calc(100vh - 64px);
+  display: block;
+}
+
+/* Full-width header container override */
+:host ::ng-deep .header .container{
+  max-width: none !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding-left: 20px;
+  padding-right: 20px;
+}

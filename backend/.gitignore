@@ -1,0 +1,28 @@
+# Build outputs
+target/
+build/
+out/
+!**/src/main/**/target/
+!**/src/test/**/target/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+# IDEs
+.idea
+*.iws
+*.iml
+*.ipr
+.vscode/
+
+# OS / temp
+.DS_Store
+Thumbs.db
+*.log
+*.tmp
+
+# Local data (tùy dự án)
+uploads/
+tmp/
+
+# (Giữ nguyên wrapper để commit)
+# .mvn/wrapper/maven-wrapper.jar   <-- ĐỪNG ignore

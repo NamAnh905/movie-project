@@ -1,0 +1,113 @@
+/* Scope toàn bộ trong trang rạp để không ảnh hưởng nơi khác */
+.cinema-page {
+  color: #eaeef3;
+}
+
+.page-title {
+  margin: 0 0 12px 0;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+/* ==== Form ==== */
+.cinema-form {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr auto;
+  gap: 12px;
+  align-items: end;
+  margin: 12px 0 16px;
+}
+
+.field {
+  width: 100%;
+}
+
+.form-actions {
+  display: flex;
+  gap: 8px;
+}
+
+/* ==== Buttons (đảm bảo cùng font/shape cho Sửa/Xóa) ==== */
+.btn {
+  font-family: inherit !important;
+  font-weight: 600 !important;
+  text-transform: none !important;
+  border-radius: 10px !important;
+  height: 36px !important;
+  line-height: 36px !important;
+}
+
+.btn-edit,
+.btn-delete,
+.btn-save,
+.btn-cancel {
+  /* để cùng kiểu chữ/dáng; màu để Material xử lý qua color="warn"/primary */
+}
+
+.btn-delete {
+  /* nếu muốn đỏ đậm hơn khi hover */
+  &:hover { filter: brightness(1.05); }
+}
+
+/* ==== Bảng ==== */
+.table-wrap {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.cinema-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.cinema-table th {
+  background: rgba(255, 255, 255, 0.04);
+  font-weight: 700;
+}
+
+.cinema-table th,
+.cinema-table td {
+  padding: 12px 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.cinema-table tr:hover td {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.col-id {
+  width: 72px;
+  white-space: nowrap;
+}
+
+.col-actions {
+  width: 180px;
+  text-align: right;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 6px;
+}
+
+.empty td {
+  padding: 18px;
+  text-align: center;
+  color: #9aa4b2;
+}
+
+/* ==== Responsive ==== */
+@media (max-width: 768px) {
+  .cinema-form {
+    grid-template-columns: 1fr;
+    align-items: stretch;
+  }
+  .form-actions {
+    justify-content: flex-start;
+  }
+  .col-actions { width: auto; }
+}

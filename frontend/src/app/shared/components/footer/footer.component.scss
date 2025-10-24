@@ -1,0 +1,150 @@
+:root{
+  /* màu & line theo theme tối tím-xanh */
+  --footer-bg-1: #0f1320;
+  --footer-bg-2: #111827;
+  --footer-text: #e6ecf5;
+  --footer-dim: #b8c2d3;
+  --footer-line: rgba(255,255,255,.14);
+  --footer-pill: rgba(255,255,255,.06);
+
+  /* bề ngang container – đồng bộ header */
+  --container-max: 1200px;          /* chỉnh 1200/1240 nếu header bạn dùng số khác */
+  --container-pad: 20px;
+}
+
+/* ===== Footer wrapper ===== */
+.site-footer{
+  color: var(--footer-text);
+  background: linear-gradient(90deg, var(--footer-bg-1), var(--footer-bg-2));
+  padding: 32px 20px 18px;
+  margin-top: 100px;
+  font-size: 14px;
+  border-top: 1px solid #2a334a; /* tông xám xanh đậm hơn */
+  box-shadow: 0 -1px 0 rgba(255,255,255,0.15) inset; /* line nổi nhẹ */
+}
+
+/* ===== Container: cùng tỷ lệ với header ===== */
+.container{
+  max-width: var(--container-max);
+  margin: 0 auto 20px;
+  padding: 0 var(--container-pad);
+}
+
+/* ===== Lưới cột =====
+   - Brand hơi rộng (1.2fr) để đủ chỗ logo + slogan
+   - Các cột còn lại cân đều
+*/
+.site-footer .container{
+  display: flex;
+  grid-template-columns: 1.2fr 1fr 1fr 1.1fr;
+  gap: 200px;                        /* giãn cột cho thoáng */
+  align-items: start;
+  justify-content: center;
+}
+
+/* ===== Brand block ===== */
+.brand{
+  display: grid;
+  grid-template-columns: 64px 1fr;
+  gap: 14px 16px;
+}
+
+.brand-link{
+  grid-column: 1 / -1;
+  display: grid;
+  // grid-template-columns: 64px 1fr;
+  gap: 14px 16px;
+  text-decoration: none;
+  color: inherit;
+  align-items: center;
+}
+
+.logo{
+  width: 128px; height: 128px; object-fit: contain;
+  margin-left: 100px;
+}
+
+.brand-text .name{
+  font-size: 26px; font-weight: 900; letter-spacing: .5px; line-height: 1.1;
+}
+.brand-text .name span{ color: #ffd84d; }
+.brand-text .slogan{
+  margin-top: 4px; opacity: .9; font-weight: 600; letter-spacing: .4px;
+      text-align: center;
+
+}
+
+.contact{ grid-column: 1 / -1; display: flex; align-items: center; gap: 10px; }
+.contact .label{ color: var(--footer-dim); }
+.icons{ display:flex; gap:10px; }
+.icons a{
+  width: 32px; height: 32px; display:inline-flex; align-items:center; justify-content:center;
+  border-radius: 50%; text-decoration: none; color:#fff; background: var(--footer-pill);
+  font-weight: 800;
+}
+.icons a:hover{ background: rgba(255,255,255,.12); }
+
+/* ===== Headings & links ===== */
+.col h4{
+  margin: 6px 0 14px;
+  font-size: 13px; font-weight: 800; letter-spacing: .6px;
+  text-transform: uppercase;
+}
+
+.links{ list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; cursor: pointer;}
+.links a{
+  color: var(--footer-dim); text-decoration: none; transition: color .15s ease, background-color .15s ease;
+  border-radius: 8px; padding: 2px 4px;
+}
+.links a:hover{ color:#fff; background: var(--footer-pill); }
+
+/* ===== Hàng bản quyền ===== */
+.legal{
+  /* canh lề trùng phần nội dung trên (Liên hệ / Hệ thống rạp) */
+  max-width: var(--wrap, 1300px);
+  margin: 0 auto;
+  padding: 16px var(--gutter, 24px);
+  border-top: 1px solid #2a334a; /* tông xám xanh đậm hơn */
+  /* xếp lưới 4 cột để bám đúng 2 đầu cột 1 và cột 4 */
+  display: grid;
+  grid-template-columns: 1.6fr 1fr 1fr 1.4fr;
+  align-items: center;
+
+  /* bỏ border-top ở legal để chỉ còn 1 đường ngăn giữa body–footer (nối liền, không đứt đoạn) */
+}
+.legal-left{
+  grid-column: 1 / 2;       /* thẳng lề trái với cột Liên hệ */
+  justify-self: start;
+}
+.legal-right{
+  grid-column: 4 / 5;       /* thẳng lề phải với cột Hệ thống rạp */
+  justify-self: end;
+}
+.policy{ color: var(--footer-dim); text-decoration: none; }
+.policy:hover{ color:#fff; text-decoration: underline; }
+
+/* ===== Responsive ===== */
+@media (max-width: 1200px){
+  .site-footer .container{
+    gap: 28px;
+    grid-template-columns: 1.1fr 1fr 1fr 1fr;
+  }
+}
+
+@media (max-width: 992px){
+  .site-footer .container{
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+  .brand-link{ grid-template-columns: 56px 1fr; }
+  .logo{ width:56px; height:56px; }
+}
+
+@media (max-width: 640px){
+  .site-footer .container{
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  .brand-link{ align-items: flex-start; }
+  .legal{ flex-direction: column; align-items: flex-start; }
+}

@@ -1,0 +1,39 @@
+<div class="wrap">
+  <div class="head">
+    <h2>Thêm rạp</h2>
+    <a class="btn" [routerLink]="['/admin/cinemas']">⬅ Quay lại</a>
+  </div>
+
+  <form [formGroup]="form" (ngSubmit)="submit()" class="card">
+    <div class="row">
+      <label for="name">Tên rạp <span>*</span></label>
+      <input id="name" type="text" formControlName="name" placeholder="Nhập tên rạp" />
+      <div class="err" *ngIf="f.name.touched && f.name.invalid">
+        <span *ngIf="f.name.errors?.['required']">Tên rạp là bắt buộc.</span>
+        <span *ngIf="f.name.errors?.['minlength']">Tối thiểu 2 ký tự.</span>
+        <span *ngIf="f.name.errors?.['maxlength']">Tối đa 255 ký tự.</span>
+      </div>
+    </div>
+
+    <div class="row">
+      <label for="address">Địa chỉ</label>
+      <input id="address" type="text" formControlName="address" placeholder="Nhập địa chỉ (không bắt buộc)" />
+      <div class="err" *ngIf="f.address.touched && f.address.invalid">
+        <span *ngIf="f.address.errors?.['maxlength']">Tối đa 500 ký tự.</span>
+      </div>
+    </div>
+
+    <div class="row">
+      <label for="status">Trạng thái <span>*</span></label>
+      <select id="status" formControlName="status">
+        <option value="ACTIVE">ACTIVE</option>
+        <option value="INACTIVE">INACTIVE</option>
+      </select>
+    </div>
+
+    <div class="actions">
+      <button type="button" class="btn" (click)="cancel()">Hủy</button>
+      <button type="submit" class="primary" [disabled]="loading">Lưu</button>
+    </div>
+  </form>
+</div>

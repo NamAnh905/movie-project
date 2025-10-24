@@ -1,0 +1,24 @@
+.wrap{ padding:20px; color:#e5e7eb; }
+.topbar{ display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; }
+.searchbar{ display:flex; gap:8px; align-items:center; }
+.searchbar input{
+  background:#0b1220; color:#e5e7eb; border:1px solid rgba(255,255,255,.1);
+  border-radius:12px; padding:10px 12px; min-width:320px;
+}
+.btn{ border:none; border-radius:10px; padding:8px 12px; font-weight:700; cursor:pointer; }
+.btn.primary{ background:#2563eb; color:#fff; }
+.btn.ghost{ background:transparent; color:#e5e7eb; border:1px solid rgba(255,255,255,.2); }
+
+.table{ border:1px solid rgba(255,255,255,.08); border-radius:12px; overflow:hidden; }
+.thead,.row{ display:grid; grid-template-columns:1.2fr 1.2fr 1.2fr .8fr .7fr .7fr; gap:10px; }
+.thead{ background:#0f172a; color:#9fb0c4; padding:10px; font-weight:700; }
+.row{
+  padding:10px; border-top:1px solid rgba(255,255,255,.06);
+  align-items:center; background:#0b1220; color:#e5e7eb;
+}
+.badge{ padding:3px 8px; border-radius:999px; background:#334155; }
+.badge.ok{ background:#065f46; }
+select{
+  background:#0f172a; color:#e5e7eb; border:1px solid rgba(255,255,255,.1);
+  border-radius:10px; padding:6px 8px;
+}

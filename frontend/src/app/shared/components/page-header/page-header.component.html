@@ -1,0 +1,50 @@
+<header class="header">
+  <div class="container">
+    <!-- Cột 1: Logo + link "Rạp chiếu" đặt cạnh nhau -->
+    <div class="brand-wrap">
+      <a class="brand" routerLink="/">
+        <img class="logo" src="assets/logo/4scinema.svg.png" alt="4SCinema">
+      </a>
+      <a class="shortcut-link" routerLink="/">Trang chủ</a>
+      <a class="shortcut-link" routerLink="/cinemas">Rạp chiếu</a>
+      <a class="shortcut-link" routerLink="/promotions">Ưu đãi</a>
+    </div>
+
+    <!-- Cột 2: Tìm kiếm -->
+    <form class="search" (submit)="$event.preventDefault(); onSearch()">
+      <input type="text" placeholder="Tìm phim" [(ngModel)]="query" name="q" />
+      <button type="button" (click)="onSearch()">Tìm</button>
+    </form>
+
+    <!-- Cột 3: Tài khoản -->
+    <nav class="nav">
+      <div class="dropdown" *ngIf="!isLoggedIn; else logged">
+        <button type="button" class="acc-btn ghost" (click)="toggleMenu($event)">
+          <span class="avatar">👤</span>
+          <span class="name">Tài khoản</span>
+          <span class="caret">▾</span>
+        </button>
+        <div class="menu" [class.show]="menuOpen" (click)="$event.stopPropagation()">
+          <a (click)="goLogin()">Đăng nhập</a>
+          <a (click)="goRegister()">Đăng ký</a>
+        </div>
+      </div>
+
+      <ng-template #logged>
+        <div class="dropdown">
+          <button type="button" class="acc-btn primary" (click)="toggleMenu($event)">
+            <span class="avatar circle">{{ initials() }}</span>
+            <span class="name">{{ displayName() }}</span>
+            <span class="caret">▾</span>
+          </button>
+          <div class="menu" [class.show]="menuOpen" (click)="$event.stopPropagation()">
+            <a (click)="goAccount()">Thông tin tài khoản</a>
+            <a (click)="goBookings()">Lịch sử đặt vé</a>   <!-- ⬅️ THÊM DÒNG NÀY -->
+            <hr>
+            <a (click)="logout()">Đăng xuất</a>
+          </div>
+        </div>
+      </ng-template>
+    </nav>
+  </div>
+</header>

@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <title>4SCinema</title>
+
+    <!-- Quan trọng cho routing -->
+    <base href="/" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#0f172a" />
+
+    <!-- Favicon (đổi nếu bạn có assets riêng) -->
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+
+    <!-- Fonts & Icons (tuỳ chọn) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0"
+      rel="stylesheet"
+    />
+    <style>
+      /* Splash tối giản khi Angular đang bootstrap */
+      html, body {
+        height: 100%;
+        background: #0b1220;
+        color: #e5e7eb;
+        margin: 0;
+        font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      }
+      .splash {
+        height: 100%;
+        display: grid;
+        place-items: center;
+      }
+      .spinner {
+        width: 48px;
+        height: 48px;
+        border: 3px solid #1f2937;
+        border-top-color: #60a5fa;
+        border-radius: 50%;
+        animation: spin 0.9s linear infinite;
+      }
+      @keyframes spin { to { transform: rotate(360deg); } }
+    </style>
+  </head>
+  <body>
+    <!-- Angular sẽ thay thế nội dung bên trong app-root -->
+    <app-root>
+      <div class="splash">
+        <div class="spinner" aria-label="Đang tải ứng dụng..."></div>
+      </div>
+    </app-root>
+
+    <noscript>
+      Vui lòng bật JavaScript để sử dụng ứng dụng 4SCinema.
+    </noscript>
+  </body>
+</html>

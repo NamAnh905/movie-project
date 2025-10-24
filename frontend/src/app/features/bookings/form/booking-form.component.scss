@@ -1,0 +1,36 @@
+.booking-wrap { padding: 24px; }
+.card {
+  display: grid; grid-template-columns: 320px 1fr; gap: 24px;
+  background: #111318; border: 1px solid #2a2e36; border-radius: 16px; padding: 20px;
+}
+.left img { width: 100%; border-radius: 12px; object-fit: cover; }
+.left .meta { margin-top: 12px; color: #cfd3dc; }
+.left h2 { margin: 0 0 4px; color: #fff; font-size: 20px; }
+.left .cinema { margin: 0; opacity: .9; }
+.left .time { margin: 4px 0 0; opacity: .8; }
+
+.right .field { margin-bottom: 16px; }
+.right .field.two { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+label { display: block; margin-bottom: 6px; color: #cfd3dc; }
+label span { color: #ff6b6b; }
+
+.qty { display: flex; gap: 8px; align-items: center; }
+.qty button { width: 36px; height: 36px; border-radius: 8px; border: 1px solid #2a2e36; background: #1b1f27; color: #e7ecf3; }
+.qty input { width: 88px; height: 36px; border-radius: 8px; border: 1px solid #2a2e36; background: #0f1116; color: #e7ecf3; padding: 0 10px; }
+
+.coupon { display: flex; gap: 8px; }
+.coupon input { flex: 1; height: 36px; border-radius: 8px; border: 1px solid #2a2e36; background: #0f1116; color: #e7ecf3; padding: 0 10px; }
+.coupon button { height: 36px; padding: 0 14px; border-radius: 8px; border: 1px solid #2a2e36; background: #1b1f27; color: #e7ecf3; }
+
+.pm { display: flex; gap: 24px; align-items: center; color: #cfd3dc; }
+.pm .disabled { opacity: .4; }
+
+.summary { margin-top: 8px; color: #cfd3dc; }
+.summary .total { margin-top: 8px; font-size: 18px; color: #fff; }
+
+.actions { margin-top: 16px; display: flex; gap: 12px; }
+.actions .primary { height: 40px; padding: 0 18px; border-radius: 10px; border: none; background: #2563eb; color: #fff; }
+.actions .ghost { display: inline-flex; align-items: center; height: 40px; padding: 0 14px; border-radius: 10px; border: 1px solid #2a2e36; color: #cfd3dc; text-decoration: none; }
+
+.error-box, .loading { padding: 12px 14px; border-radius: 8px; background: #1b1f27; color: #e7ecf3; }
+@media (max-width: 900px) { .card { grid-template-columns: 1fr; } }

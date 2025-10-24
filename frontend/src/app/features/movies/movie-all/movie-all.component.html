@@ -1,0 +1,26 @@
+<section class="container section">
+  <header class="head">
+    <h2>{{ title }}</h2>
+  </header>
+
+  <div class="grid cols-5">
+    <article *ngFor="let m of items" class="card card-movie">
+      <div class="poster">
+        <img [src]="m.posterUrl" [alt]="m.title" loading="lazy" />
+        <div class="hover-overlay">
+          <a class="btn detail" [routerLink]="['/movies', m.id]">XEM CHI TIẾT</a>
+        </div>
+      </div>
+      <div class="meta">
+        <div class="sub" *ngIf="m.releaseDate">Khởi chiếu: {{ m.releaseDate | date:'dd/MM/yyyy' }}</div>
+        <h3><a [routerLink]="['/movies', m.id]">{{ m.title }}</a></h3>
+      </div>
+    </article>
+  </div>
+
+  <div class="empty" *ngIf="!loading && items.length===0">Không có phim phù hợp.</div>
+
+  <section class="container error" *ngIf="errorMsg && !loading">
+    {{ errorMsg }}
+  </section>
+</section>

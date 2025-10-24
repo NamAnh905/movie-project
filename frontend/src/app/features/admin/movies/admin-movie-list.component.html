@@ -1,0 +1,78 @@
+<div class="bar">
+  <h2>Quản lý phim</h2>
+  <div class="actions">
+    <!-- Lọc theo thể loại -->
+    <select [(ngModel)]="selectedGenreId" (change)="onGenreChange()">
+      <option [ngValue]="null">-- Tất cả thể loại --</option>
+      <option *ngFor="let g of genres" [ngValue]="g.id">{{ g.name }}</option>
+    </select>
+
+    <input [(ngModel)]="q" placeholder="Tìm theo tên" (keyup.enter)="onSearch()">
+    <button (click)="onSearch()">Tìm</button>
+    <button class="primary" (click)="router.navigate(['/admin/movies/new'])">+ Thêm phim</button>
+  </div>
+</div>
+
+<table class="tbl" *ngIf="items.length; else empty">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Poster</th>
+      <th>Tiêu đề</th>
+      <th>Thể loại</th>
+      <th>Thời lượng</th>
+      <th>Ngôn ngữ</th>
+      <th>Quốc gia</th>
+      <th>Trạng thái</th>
+      <th>Hành động</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let m of items">
+      <td>{{ m.id }}</td>
+      <td><img [src]="m.posterUrl || '/assets/placeholder-poster.webp'"></td>
+      <td>{{ m.title }}</td>
+      <td>
+        <span *ngIf="m.genreNames?.length; else noGenre">
+          <ng-container *ngFor="let g of m.genreNames; let last = last">
+            {{ g }}<ng-container *ngIf="!last">, </ng-container>
+          </ng-container>
+        </span>
+        <ng-template #noGenre><i>—</i></ng-template>
+      </td>
+      <td>{{ m.duration }}'</td>
+      <td>{{ m.language }}</td>
+      <td>{{ m.country }}</td>
+      <td>{{ m.status }}</td>
+      <td class="ops">
+        <a class="edit" [routerLink]="['/admin/movies', m.id]">Sửa</a>
+        <button class="danger" (click)="remove(m.id)">Xóa</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<ng-template #empty>
+  <div class="empty">Chưa có dữ liệu</div>
+</ng-template>
+
+<!-- PHÂN TRANG -->
+<div class="pager" *ngIf="totalPages > 1">
+  <div class="info">
+    Trang <b>{{ page + 1 }}</b>/<b>{{ totalPages }}</b> · <span>{{ totalElements }}</span> phim
+  </div>
+  <div class="controls">
+    <button class="btn" [disabled]="page === 0" (click)="goTo(0)">«</button>
+    <button class="btn" [disabled]="page === 0" (click)="prev()">‹</button>
+
+    <button class="btn num"
+            *ngFor="let p of pager"
+            [class.active]="p === page"
+            (click)="goTo(p)">
+      {{ p + 1 }}
+    </button>
+
+    <button class="btn" [disabled]="page >= totalPages - 1" (click)="next()">›</button>
+    <button class="btn" [disabled]="page >= totalPages - 1" (click)="goTo(totalPages - 1)">»</button>
+  </div>
+</div>

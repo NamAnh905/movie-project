@@ -1,0 +1,22 @@
+<div class="admin">
+  <aside class="sidebar">
+    <h3>Admin</h3>
+    <a routerLink="/admin/revenue" routerLinkActive="active">Quản lý doanh thu</a>
+    <a routerLink="/admin/movies" routerLinkActive="active">Quản lý phim</a>
+    <a routerLink="/admin/genres" routerLinkActive="active" class="nav-link">
+      <i class="fa fa-tags"></i>
+      <span>Quản lý thể loại</span>
+    </a>
+    <a routerLink="/admin/cinemas" routerLinkActive="active">Quản lý rạp</a>
+    <a routerLink="/admin/showtimes" routerLinkActive="active">Quản lý lịch chiếu</a>
+    <a routerLink="/admin/bookings">Quản lý đặt vé</a>
+    <a routerLink="/admin/users" routerLinkActive="active">Quản lý người dùng</a>
+
+    <!-- Thay "Về trang khách/chính" bằng nút Đăng xuất -->
+    <button type="button" class="btn-logout" (click)="onLogout()">Đăng xuất</button>
+  </aside>
+
+  <main class="content">
+    <router-outlet></router-outlet>
+  </main>
+</div>

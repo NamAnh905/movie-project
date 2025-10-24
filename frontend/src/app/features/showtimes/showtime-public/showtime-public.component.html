@@ -1,0 +1,61 @@
+<div class="showtime-wrap">
+  <div class="filter">
+    <label>Ngày</label>
+    <input
+      type="date"
+      [(ngModel)]="selectedDate"
+      (ngModelChange)="onDateChange($event)"
+    />
+  </div>
+
+  <!-- Chỉ hiện chọn rạp ở chế độ byCinema -->
+  <div class="filter" *ngIf="mode === 'byCinema'">
+    <label>Rạp</label>
+    <select [(ngModel)]="selectedCinemaId" (ngModelChange)="load()">
+      <option [ngValue]="null">-- Chọn rạp --</option>
+      <option *ngFor="let c of cinemas" [ngValue]="c.id">{{ c.name }}</option>
+    </select>
+  </div>
+
+  <div *ngIf="errorMsg" class="error">{{ errorMsg }}</div>
+
+  <div class="cards" *ngIf="groups?.length; else empty">
+    <div class="card" *ngFor="let g of groups; trackBy: trackByMovieId">
+      <div class="poster">
+        <img
+          [src]="(mode === 'byMovie' ? movieInfo?.posterUrl : g.posterUrl) || 'assets/posters/banner.png'"
+          (error)="onImgError($event)" />
+      </div>
+
+      <div class="meta">
+        <h3 class="title">
+          <ng-container *ngIf="mode === 'byMovie'; else byCinemaTitle">
+            {{ movieInfo?.title }}
+            <small>— {{ g.title }}</small>
+          </ng-container>
+          <ng-template #byCinemaTitle>
+            {{ g.title }}
+          </ng-template>
+        </h3>
+
+        <div class="times">
+          <button
+            class="time"
+            *ngFor="let t of g.times; trackBy: trackByTime"
+            type="button"
+            (click)="quickBookTime(t, g)">
+            {{ t.startLabel }}
+          </button>
+        </div>
+
+        <a *ngIf="g.movieId" class="btn" [routerLink]="['/movies', g.movieId]">
+          Xem chi tiết
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #empty>
+    <div class="mt-4">Không có suất cho ngày đã chọn.</div>
+  </ng-template>
+</div>

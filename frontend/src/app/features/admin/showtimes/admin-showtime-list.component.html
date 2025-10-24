@@ -1,0 +1,68 @@
+<div class="wrap">
+  <h1>🎬 Lịch chiếu – Danh sách</h1>
+
+  <div class="filters">
+    <div>
+      <label>Ngày</label>
+      <input type="date" [(ngModel)]="date">
+    </div>
+    <div>
+      <label>Phim</label>
+      <select [(ngModel)]="movieId">
+        <option [ngValue]="null">-- Tất cả --</option>
+        <option *ngFor="let m of movies" [ngValue]="m.id">{{ m.title }}</option>
+      </select>
+    </div>
+    <div>
+      <label>Rạp</label>
+      <select [(ngModel)]="cinemaId">
+        <option [ngValue]="null">-- Tất cả --</option>
+        <option *ngFor="let c of cinemas" [ngValue]="c.id">{{ c.name }}</option>
+      </select>
+    </div>
+    <button class="btn" (click)="search()">Tìm</button>
+    <button class="btn primary" (click)="goCreate()">+ Thêm mới</button>
+  </div>
+
+  <div class="hint" *ngIf="loading">Đang tải...</div>
+  <div class="hint" *ngIf="!loading && !items.length">Không có dữ liệu.</div>
+
+  <table *ngIf="!loading && items.length">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Ngày</th>
+        <th>Giờ</th>
+        <th>Phim</th>
+        <th>Rạp</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let it of items; index as i; trackBy: trackById">
+        <td>{{ i + 1 }}</td>
+        <td>{{ startDate(it) }}</td>
+        <td>{{ startTime(it) }}</td>
+        <td>{{ getMovieName(it) }}</td>
+        <td>{{ getCinemaName(it) }}</td>
+        <td>
+          <button class="btn danger" (click)="remove(it)">Xóa</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="pager" *ngIf="!loading && totalPages > 1">
+    <button class="pg" (click)="prev()" [disabled]="page === 0">‹</button>
+
+    <button class="pg"
+            *ngFor="let p of pages"
+            [class.active]="p === page"
+            (click)="goPage(p)">
+      {{ p + 1 }}
+    </button>
+
+    <button class="pg" (click)="next()" [disabled]="page >= totalPages - 1">›</button>
+
+  </div>
+</div>

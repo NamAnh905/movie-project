@@ -1,0 +1,6 @@
+
+/* Global app styles – keep minimal; avoid global max-widths so layouts can be full-width */
+:host{display:block; min-height:100vh;}
+/* Remove generic .container restrictions – components/layouts handle their own widths now */
+.container{max-width: none; margin: 0; padding: 0;}
+.app-container{padding: 0; max-width: none; margin: 0;}

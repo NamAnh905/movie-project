@@ -1,0 +1,56 @@
+<section class="page-head">
+  <h2>Quản lý thể loại</h2>
+  <div class="head-actions">
+    <input [(ngModel)]="q" placeholder="Tìm theo tên thể loại..." (keyup.enter)="search()" />
+    <button class="btn" (click)="search()">Tìm</button>
+    <button class="btn primary" (click)="startCreate()">+ Thêm thể loại</button>
+  </div>
+</section>
+
+<!-- Form thêm/sửa (nằm dưới header, giống block trên trang phim khi có form) -->
+<div class="panel" *ngIf="mode === 'CREATE' || mode === 'EDIT'">
+  <h3>{{ mode === 'EDIT' ? 'Sửa thể loại' : 'Thêm thể loại' }}</h3>
+  <div class="grid-2">
+    <div class="field">
+      <label>Tên</label>
+      <input [(ngModel)]="form.name" placeholder="Nhập tên thể loại" />
+    </div>
+    <div class="field">
+      <label>Slug</label>
+      <input [(ngModel)]="form.slug" placeholder="slug-khong-dau" />
+    </div>
+  </div>
+  <div class="actions">
+    <button class="btn success" (click)="save()">Lưu</button>
+    <button class="btn" (click)="cancelForm()">Huỷ</button>
+  </div>
+</div>
+
+<!-- Bảng danh sách -->
+<div class="card">
+  <table class="table">
+    <thead>
+      <tr>
+        <th style="width:80px;">ID</th>
+        <th>Tên thể loại</th>
+        <th>Slug</th>
+        <th class="text-right" style="width:160px;">Hành động</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let g of items">
+        <td>{{ g.id }}</td>
+        <td>{{ g.name }}</td>
+        <td>{{ g.slug }}</td>
+        <td class="text-right">
+          <button class="btn edit" (click)="startEdit(g)">Sửa</button>
+          <button class="btn danger" (click)="remove(g.id!)">Xóa</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="empty" *ngIf="!loading && (!items || items.length === 0)">
+    Không có thể loại.
+  </div>
+</div>
