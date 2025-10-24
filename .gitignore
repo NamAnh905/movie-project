@@ -1,0 +1,13 @@
+# Java
+target/
+*.log
+*.iml
+*.class
+.idea/
+# Node/Angular
+node_modules/
+dist/
+.angular/
+# OS
+.DS_Store
+Thumbs.db
