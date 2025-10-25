@@ -65,21 +65,28 @@ public class SecurityConfig {
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authProvider)
                 .authorizeHttpRequests(auth -> auth
-                        // ===== Public GET =====
-                        .requestMatchers(HttpMethod.GET,
-                                "/api/showtimes/public", "/api/showtimes/public/**",
-                                "/api/showtimes/*", "/api/showtimes/resolve"          // bạn đã có
-                        ).permitAll()
+                        // Preflight CORS
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 
-                        // ===== Open public browsing for guests =====
+                        // ===== Public GET (mở đúng pattern) =====
                         .requestMatchers(HttpMethod.GET,
-                                "/api/movies",
+                                // showtimes
+                                "/api/showtimes/public", "/api/showtimes/public/**",
+                                "/api/showtimes/*", "/api/showtimes/resolve",
+
+                                // cinemas (public)
+                                "/api/cinemas/public", "/api/cinemas/public/**",
+
+                                // movies (các trang public)
+                                "/api/movies",              // danh sách
+                                "/api/movies/*",            // /api/movies/{id}
+                                "/api/movies/**",           // phòng khi có nested route public khác
                                 "/api/movies/all",
-                                "/api/movies/{id}",
-                                "/api/movies/status/{status}/all",
-                                "/api/cinemas/public",
+                                "/api/movies/status/*/all", // thay {status} bằng *
+
+                                // genres (public)
                                 "/api/genres/all",
-                                "/api/genres/{id}"
+                                "/api/genres/*"
                         ).permitAll()
 
                         // ===== Static/Auth/Docs =====
@@ -88,7 +95,6 @@ public class SecurityConfig {
                                 "/swagger-ui/**", "/v3/api-docs/**",
                                 "/uploads/**"
                         ).permitAll()
-                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 
                         // ===== Bookings =====
                         .requestMatchers(HttpMethod.GET,  "/api/bookings/mine").authenticated()
@@ -104,19 +110,4 @@ public class SecurityConfig {
 
         return http.build();
     }
-
-    // CORS cho FE :4200
-//    @Bean
-//    public CorsConfigurationSource corsConfigurationSource() {
-//        CorsConfiguration cfg = new CorsConfiguration();
-//        cfg.setAllowedOrigins(List.of("http://localhost:4200"));
-//        cfg.setAllowedMethods(List.of("GET","POST","PUT","DELETE","OPTIONS"));
-//        cfg.setAllowedHeaders(List.of("Authorization","Content-Type"));
-//        cfg.setAllowCredentials(true);
-//
-//        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-//        source.registerCorsConfiguration("/**", cfg);
-//        return source;
-//    }
-
 }

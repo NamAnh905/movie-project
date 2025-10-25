@@ -27,26 +27,41 @@ public class JwtFilter extends OncePerRequestFilter {
     }
 
     @Override
+    @Override
     protected void doFilterInternal(HttpServletRequest req, HttpServletResponse res, FilterChain chain)
             throws IOException, ServletException {
+
+        // 1) Cho qua ngay preflight
+        if ("OPTIONS".equalsIgnoreCase(req.getMethod())) {
+            chain.doFilter(req, res);
+            return;
+        }
+
         try {
             String header = req.getHeader("Authorization");
-            if (header != null && header.startsWith("Bearer ")) {
-                String token = header.substring(7);
-                String username = jwtService.extractUsername(token);
+            if (header != null) {
+                header = header.trim();
+            }
+            if (header != null && header.regionMatches(true, 0, "Bearer ", 0, 7)) {
+                String raw = header.substring(7).trim();
+                // 2) Bỏ qua token rỗng / "null" / "undefined"
+                if (!raw.isEmpty() && !"null".equalsIgnoreCase(raw) && !"undefined".equalsIgnoreCase(raw)) {
 
-                if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-                    var ud = userDetailsService.loadUserByUsername(username);
-                    if (jwtService.isTokenValid(token, ud)) {
-                        var auth = new UsernamePasswordAuthenticationToken(ud, null, ud.getAuthorities());
-                        auth.setDetails(new WebAuthenticationDetailsSource().buildDetails(req));
-                        SecurityContextHolder.getContext().setAuthentication(auth);
+                    String username = jwtService.extractUsername(raw); // có thể throw -> đã catch dưới
+                    if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                        var ud = userDetailsService.loadUserByUsername(username);
+                        if (jwtService.isTokenValid(raw, ud)) {
+                            var auth = new UsernamePasswordAuthenticationToken(ud, null, ud.getAuthorities());
+                            auth.setDetails(new WebAuthenticationDetailsSource().buildDetails(req));
+                            SecurityContextHolder.getContext().setAuthentication(auth);
+                        }
                     }
                 }
             }
-        } catch (Exception e) {
-            // đừng throw -> tránh 500; coi như chưa đăng nhập
+        } catch (Exception ignored) {
+            // Không sendError -> coi như request guest, để rule permitAll() xử lý
         }
+
         chain.doFilter(req, res);
     }
 }
