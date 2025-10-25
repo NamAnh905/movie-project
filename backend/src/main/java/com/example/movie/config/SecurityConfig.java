@@ -66,10 +66,23 @@ public class SecurityConfig {
                 .authenticationProvider(authProvider)
                 .authorizeHttpRequests(auth -> auth
                         // ===== Public GET =====
-                        .requestMatchers(HttpMethod.GET, "/api/showtimes/public", "/api/showtimes/public/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/showtimes/resolve").permitAll() // (tuỳ, có thể bỏ vì dòng dưới đã cover)
-                        .requestMatchers(HttpMethod.GET, "/api/showtimes/*").permitAll()      // /api/showtimes/{id|resolve}
+                        .requestMatchers(HttpMethod.GET,
+                                "/api/showtimes/public", "/api/showtimes/public/**",
+                                "/api/showtimes/*", "/api/showtimes/resolve"          // bạn đã có
+                        ).permitAll()
 
+                        // ===== Open public browsing for guests =====
+                        .requestMatchers(HttpMethod.GET,
+                                "/api/movies",
+                                "/api/movies/all",
+                                "/api/movies/{id}",
+                                "/api/movies/status/{status}/all",
+                                "/api/cinemas/public",
+                                "/api/genres/all",
+                                "/api/genres/{id}"
+                        ).permitAll()
+
+                        // ===== Static/Auth/Docs =====
                         .requestMatchers(
                                 "/api/auth/**",
                                 "/swagger-ui/**", "/v3/api-docs/**",
@@ -78,17 +91,13 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 
                         // ===== Bookings =====
-                        .requestMatchers(HttpMethod.GET,  "/api/bookings/mine").authenticated() // đặt TRƯỚC
-                        .requestMatchers(HttpMethod.GET,  "/api/bookings/*").permitAll()        // chi tiết đơn: public cho trang success
-                        .requestMatchers(HttpMethod.POST, "/api/bookings").authenticated()      // tuỳ nhu cầu, VNPAY đang dùng /payments
-
-                        // ===== Payments (VNPAY) =====
-                        .requestMatchers(HttpMethod.POST, "/api/payments/vnpay/create").permitAll()
-                        .requestMatchers(HttpMethod.GET,  "/api/payments/vnpay-return").permitAll()
-
-                        // ===== Khác =====
-                        .requestMatchers(HttpMethod.PUT,    "/api/bookings/**").authenticated()
+                        .requestMatchers(HttpMethod.GET,  "/api/bookings/mine").authenticated()
+                        .requestMatchers(HttpMethod.GET,  "/api/bookings/*").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/bookings").authenticated()
+                        .requestMatchers(HttpMethod.PUT,  "/api/bookings/**").authenticated()
                         .requestMatchers(HttpMethod.DELETE, "/api/bookings/**").hasRole("ADMIN")
+
+                        // ===== Close the rest =====
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
@@ -97,16 +106,17 @@ public class SecurityConfig {
     }
 
     // CORS cho FE :4200
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration cfg = new CorsConfiguration();
-        cfg.setAllowedOrigins(List.of("http://localhost:4200"));
-        cfg.setAllowedMethods(List.of("GET","POST","PUT","DELETE","OPTIONS"));
-        cfg.setAllowedHeaders(List.of("Authorization","Content-Type"));
-        cfg.setAllowCredentials(true);
+//    @Bean
+//    public CorsConfigurationSource corsConfigurationSource() {
+//        CorsConfiguration cfg = new CorsConfiguration();
+//        cfg.setAllowedOrigins(List.of("http://localhost:4200"));
+//        cfg.setAllowedMethods(List.of("GET","POST","PUT","DELETE","OPTIONS"));
+//        cfg.setAllowedHeaders(List.of("Authorization","Content-Type"));
+//        cfg.setAllowCredentials(true);
+//
+//        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+//        source.registerCorsConfiguration("/**", cfg);
+//        return source;
+//    }
 
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", cfg);
-        return source;
-    }
 }

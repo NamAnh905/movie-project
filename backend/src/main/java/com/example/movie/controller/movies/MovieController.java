@@ -78,7 +78,7 @@ public class MovieController {
 
     // Thêm endpoint không phân trang
     @GetMapping("/status/{status}/all")
-    public List<MovieDTO> listAllByStatus(@PathVariable String status) {
+    public  List<MovieDTO> listAllByStatus(@PathVariable String status) {
         return service.findAllByStatus(status);
     }
 
