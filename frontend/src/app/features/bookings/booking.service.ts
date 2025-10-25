@@ -6,7 +6,7 @@ import { environment } from '../../../environments/environment';
 @Injectable({ providedIn: 'root' })
 export class BookingService {
   private http = inject(HttpClient);
-  private BASE = (environment as any)?.baseUrl ?? 'http://localhost:8080';
+  private BASE = environment.baseUrl;
   private API = `${this.BASE}/api`;
 
   getAvailability(showtimeId: number): Observable<any> {

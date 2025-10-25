@@ -3,6 +3,7 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { environment } from '../../../../environments/environment';
 
 import { MovieService } from '../../movies/movie.service';
 import { CinemaService, Cinema } from '../../cinemas/cinema.service';
@@ -108,9 +109,7 @@ export class AdminShowtimeFormComponent implements OnInit {
 
   /** origin BE: FE 4200 -> BE 8080 khi dev; prod dùng cùng origin */
   private apiOrigin(): string {
-    return location.port === '4200'
-      ? location.origin.replace(':4200', ':8080')
-      : location.origin;
+    return environment.baseUrl;
   }
 
   save() {

@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { environment } from '../../../../environments/environment';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 
 export interface PageResponse<T>{ items:T[]; page:number; size:number; total:number; totalPages:number; }
@@ -19,7 +20,7 @@ export interface Detail extends ListItem{
 
 @Injectable({ providedIn:'root' })
 export class AdminBookingService {
-  private base = location.port==='4200' ? location.origin.replace(':4200',':8080') : location.origin;
+  private base = environment.baseUrl;
   private headers() {
     const token = localStorage.getItem('token') || '';
     return token ? new HttpHeaders({ Authorization: `Bearer ${token}` }) : undefined;

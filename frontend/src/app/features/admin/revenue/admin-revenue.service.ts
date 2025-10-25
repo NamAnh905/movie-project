@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { environment } from '../../../../environments/environment';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 
 export interface RevenueSummary { revenue: number; tickets: number; bookings: number; }
@@ -13,9 +14,7 @@ export interface RevenueOverview {
 }
 @Injectable({ providedIn: 'root' })
 export class AdminRevenueService {
-  private base = location.port==='4200'
-    ? location.origin.replace(':4200', ':8080')
-    : location.origin;
+  private base = environment.baseUrl;
 
   constructor(private http: HttpClient) {}
 

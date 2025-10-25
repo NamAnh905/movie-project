@@ -36,7 +36,7 @@ export interface ShowtimeCreate {
 @Injectable({ providedIn: 'root' })
 export class ShowtimeService {
   private http = inject(HttpClient);
-  private BASE = (environment as any)?.baseUrl ?? 'http://localhost:8080';
+  private BASE = environment.baseUrl;
   private API = `${this.BASE}/api`;
 
   private normalize = (x: any): ShowtimeItem => {

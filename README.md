@@ -2,7 +2,7 @@
 
 Hệ thống web đặt vé xem phim trực tuyến.
 - 🌐 Frontend (Angular): [https://movie-project-two-eta.vercel.app](https://movie-project-two-eta.vercel.app)
-- 🛠️ Backend (Spring Boot): [https://movie-be-hecl.onrender.com/api](https://movie-be-hecl.onrender.com/api)
+- 🛠️ Backend (Spring Boot): [https://movie-be-hecl.onrender.com/api/movies/all](https://movie-be-hecl.onrender.com/api/movies/all)
 - 💾 Database: MySQL (online)
 - 🔐 JWT Authentication, RESTful API, Katalon Testing
 

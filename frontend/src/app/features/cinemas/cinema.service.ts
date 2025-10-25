@@ -48,7 +48,7 @@ const makeAbs = (base: string, url?: string | null) => {
 @Injectable({ providedIn: 'root' })
 export class CinemaService {
   private http = inject(HttpClient);
-  private BASE = (environment as any)?.baseUrl ?? 'http://localhost:8080';
+  private BASE = environment.baseUrl;
   private API = `${this.BASE}/api`;
 
   // ========= ADMIN / COMMON CRUD =========
