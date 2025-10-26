@@ -65,45 +65,38 @@ public class SecurityConfig {
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authProvider)
                 .authorizeHttpRequests(auth -> auth
-                        // Preflight CORS
+                        // Preflight cho CORS
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 
-                        // ===== Public GET (mở đúng pattern) =====
+                        // ====== PUBLIC GET ======
                         .requestMatchers(HttpMethod.GET,
-                                // showtimes
+                                // movies: danh sách, chi tiết, lọc qua query
+                                "/api/movies", "/api/movies/*", "/api/movies/**",
+                                "/api/movies/all",
+                                "/api/movies/status/*/all",
+
+                                // cinemas public
+                                "/api/cinemas/public", "/api/cinemas/public/**",
+
+                                // showtimes public
                                 "/api/showtimes/public", "/api/showtimes/public/**",
                                 "/api/showtimes/*", "/api/showtimes/resolve",
 
-                                // cinemas (public)
-                                "/api/cinemas/public", "/api/cinemas/public/**",
-
-                                // movies (các trang public)
-                                "/api/movies",              // danh sách
-                                "/api/movies/*",            // /api/movies/{id}
-                                "/api/movies/**",           // phòng khi có nested route public khác
-                                "/api/movies/all",
-                                "/api/movies/status/*/all", // thay {status} bằng *
-
-                                // genres (public)
-                                "/api/genres/all",
-                                "/api/genres/*"
+                                // genres public
+                                "/api/genres/all", "/api/genres/*"
                         ).permitAll()
 
-                        // ===== Static/Auth/Docs =====
-                        .requestMatchers(
-                                "/api/auth/**",
-                                "/swagger-ui/**", "/v3/api-docs/**",
-                                "/uploads/**"
-                        ).permitAll()
+                        // Auth/Docs/Static
+                        .requestMatchers("/api/auth/**", "/swagger-ui/**", "/v3/api-docs/**", "/uploads/**").permitAll()
 
-                        // ===== Bookings =====
-                        .requestMatchers(HttpMethod.GET,  "/api/bookings/mine").authenticated()
-                        .requestMatchers(HttpMethod.GET,  "/api/bookings/*").permitAll()
+                        // Bookings
+                        .requestMatchers(HttpMethod.GET, "/api/bookings/mine").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/api/bookings/*").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/bookings").authenticated()
                         .requestMatchers(HttpMethod.PUT,  "/api/bookings/**").authenticated()
                         .requestMatchers(HttpMethod.DELETE, "/api/bookings/**").hasRole("ADMIN")
 
-                        // ===== Close the rest =====
+                        // còn lại
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);

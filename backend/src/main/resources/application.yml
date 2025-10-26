@@ -3,10 +3,12 @@ spring:
     active: ${SPRING_PROFILES_ACTIVE:dev}
 
 ---
+
 spring:
   config:
     activate:
       on-profile: dev
+
   datasource:
     url: jdbc:mysql://localhost:3306/movie_management?useSSL=false&serverTimezone=UTC
     username: root
@@ -16,14 +18,25 @@ spring:
       ddl-auto: update
     database-platform: org.hibernate.dialect.MySQLDialect
   jpa.open-in-view: false
+
+  # VNPay Sandbox (local)
+vnpay:
+  tmnCode: ZSEK0NUE
+  hashSecret: 5MP7DY0G2RA9D37UA8RG10I4C7RKGPQD       # thay bằng secret sandbox thật của bạn
+  payUrl: https://sandbox.vnpayment.vn/paymentv2/vpcpay.html
+  returnUrl: http://localhost:8080/api/payments/vnpay-return
+
 server:
   port: 8080
+  forward-headers-strategy: framework
 
 ---
+
 spring:
   config:
     activate:
       on-profile: prod
+
   datasource:
     url: ${SPRING_DATASOURCE_URL:jdbc:mysql://mysql-afd9d79-namanhdang0905-942b.f.aivencloud.com:15505/defaultdb?ssl-mode=REQUIRED}
     username: ${SPRING_DATASOURCE_USERNAME:avnadmin}
@@ -34,6 +47,17 @@ spring:
       ddl-auto: update
     database-platform: org.hibernate.dialect.MySQLDialect
   jpa.open-in-view: false
+
+  # VNPay (Render deploy)
+vnpay:
+  tmnCode: ${VNPAY_TMN_CODE}
+  hashSecret: ${VNPAY_HASH_SECRET}
+  # sandbox hoặc prod tùy môi trường thật bạn đang dùng
+  payUrl: https://sandbox.vnpayment.vn/paymentv2/vpcpay.html
+  # payUrl: https://pay.vnpay.vn/vpcpay.html
+  returnUrl: https://https://movie-be-hecl.onrender.com /api/payments/vnpay-return   # ⚠️ sửa domain Render thật vào đây
+
 server:
   port: ${PORT:8080}
   address: 0.0.0.0
+  forward-headers-strategy: framework
