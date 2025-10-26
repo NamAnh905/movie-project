@@ -2,6 +2,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
+import { environment } from '../../../environments/environment';
 
 export interface AuthResponse {
   token?: string;
@@ -25,7 +26,8 @@ export interface JwtPayload {
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private readonly key = 'token';
-  private readonly baseUrl = '/api/auth';
+  // ✅ Dùng base URL từ environment (prod = Render), không dùng đường dẫn tương đối
+  private readonly baseUrl = `${environment.baseUrl}${environment.api.auth}`;
 
   constructor(private http: HttpClient) {}
 

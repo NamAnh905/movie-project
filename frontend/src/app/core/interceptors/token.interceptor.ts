@@ -31,12 +31,16 @@ export class TokenInterceptor implements HttpInterceptor {
     // 3) Bỏ qua các endpoint public / auth / swagger
     const isAuth = path.startsWith('/api/auth/');
     const isSwagger = path.startsWith('/swagger-ui') || path.startsWith('/v3/api-docs');
+    // token.interceptor.ts  (mở rộng isPublic)
     const isPublic = [
       /^\/api\/cinemas\/public(?:\/|$)/,
       /^\/api\/showtimes\/public(?:\/|$)/,
-      /^\/api\/movies\/public(?:\/|$)/,   // nếu bạn có route này
-      /^\/uploads(?:\/|$)/                // file tĩnh
+      // thêm các public "không có /public" trong path:
+      /^\/api\/movies(?:\/|$)/,         // GET /api/movies?... (list, detail)
+      /^\/api\/genres(?:\/|$)/,         // GET /api/genres/all, /api/genres/:id
+      /^\/uploads(?:\/|$)/              // file tĩnh
     ].some(r => r.test(path));
+
 
     if (isAuth || isSwagger || isPublic) {
       return next.handle(req);
