@@ -10,16 +10,15 @@ spring:
       on-profile: dev
 
   datasource:
-    url: jdbc:mysql://localhost:3306/movie_management?useSSL=false&serverTimezone=UTC
-    username: root
-    password:
+    url: ${SPRING_DATASOURCE_URL}
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
   jpa:
     hibernate:
       ddl-auto: update
     database-platform: org.hibernate.dialect.MySQLDialect
   jpa.open-in-view: false
 
-  # VNPay Sandbox (local)
 vnpay:
   tmnCode: ${VNPAY_TMN_CODE:DEMO_TMN}
   hashSecret: ${VNPAY_HASH_SECRET:DEMO_SECRET}
@@ -48,14 +47,11 @@ spring:
     database-platform: org.hibernate.dialect.MySQLDialect
   jpa.open-in-view: false
 
-  # VNPay (Render deploy)
 vnpay:
   tmnCode: ${VNPAY_TMN_CODE}
   hashSecret: ${VNPAY_HASH_SECRET}
-  # sandbox hoặc prod tùy môi trường thật bạn đang dùng
   payUrl: https://sandbox.vnpayment.vn/paymentv2/vpcpay.html
-  # payUrl: https://pay.vnpay.vn/vpcpay.html
-  returnUrl: https://movie-be-hecl.onrender.com /api/payments/vnpay-return   # ⚠️ sửa domain Render thật vào đây
+  returnUrl: https://movie-be-hecl.onrender.com/api/payments/vnpay-return
 
 server:
   port: ${PORT:8080}
