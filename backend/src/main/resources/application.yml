@@ -21,8 +21,8 @@ spring:
 
   # VNPay Sandbox (local)
 vnpay:
-  tmnCode: ZSEK0NUE
-  hashSecret: 5MP7DY0G2RA9D37UA8RG10I4C7RKGPQD       # thay bằng secret sandbox thật của bạn
+  tmnCode: ${VNPAY_TMN_CODE:DEMO_TMN}
+  hashSecret: ${VNPAY_HASH_SECRET:DEMO_SECRET}
   payUrl: https://sandbox.vnpayment.vn/paymentv2/vpcpay.html
   returnUrl: http://localhost:8080/api/payments/vnpay-return
 
@@ -55,7 +55,7 @@ vnpay:
   # sandbox hoặc prod tùy môi trường thật bạn đang dùng
   payUrl: https://sandbox.vnpayment.vn/paymentv2/vpcpay.html
   # payUrl: https://pay.vnpay.vn/vpcpay.html
-  returnUrl: https://https://movie-be-hecl.onrender.com /api/payments/vnpay-return   # ⚠️ sửa domain Render thật vào đây
+  returnUrl: https://movie-be-hecl.onrender.com /api/payments/vnpay-return   # ⚠️ sửa domain Render thật vào đây
 
 server:
   port: ${PORT:8080}

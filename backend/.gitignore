@@ -24,5 +24,11 @@ Thumbs.db
 uploads/
 tmp/
 
-# (Giữ nguyên wrapper để commit)
-# .mvn/wrapper/maven-wrapper.jar   <-- ĐỪNG ignore
+backend/target/
+frontend/node_modules/
+frontend/dist/
+.env
+*.env
+*.log
+
+.yml
