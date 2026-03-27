@@ -1,0 +1,50 @@
+:host { display: block; color: #e5e7eb; }
+.wrap { padding: 16px; }
+
+/* CSS LIST */
+.bar {
+  display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;
+  h2 { margin: 0; font-weight: 800; }
+  .actions {
+    display: flex; align-items: center; gap: 8px;
+    .divider { width: 1px; height: 28px; background: rgba(255,255,255,0.2); margin: 0 4px; }
+  }
+}
+input, select {
+  height: 40px; background: #111823; border: 1px solid rgba(255,255,255,.12);
+  border-radius: 10px; color: #e8edf2; padding: 0 12px; outline: none;
+  &:focus { border-color: rgba(30,136,229,.65); box-shadow: 0 0 0 3px rgba(30,136,229,.15); }
+}
+.btn, button, .primary {
+  min-width: 80px; height: 40px; border: none; border-radius: 10px;
+  background: #1f2937; color: #e8edf2; font-weight: 600; cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: center;
+  &:disabled { opacity: 0.5; cursor: not-allowed; }
+}
+.primary { background: #1e88e5; color: #fff; }
+.tbl {
+  width: 100%; border-collapse: separate; border-spacing: 0 8px;
+  thead th { text-align: left; padding: 10px 12px; opacity: 0.9; }
+  tbody tr {
+    background: #141a24;
+    &:hover { background: #182131; }
+    td { padding: 12px; vertical-align: middle; border-bottom: 1px solid rgba(255,255,255,0.05);}
+  }
+  .ops { display: flex; gap: 8px; }
+  .edit { background: #1f2937; color: #fff; padding: 6px 10px; border-radius: 8px; cursor: pointer; text-decoration: none;}
+  .danger { background: #ef4444; color: #fff; padding: 6px 10px; border-radius: 8px; cursor: pointer; height: auto; min-width: unset; }
+}
+.empty { padding: 20px; text-align: center; border: 1px dashed rgba(255,255,255,0.2); border-radius: 12px; color: #9fb0c4; }
+.pager {
+  display: flex; justify-content: space-between; align-items: center; margin-top: 16px;
+  background: #0f172a; padding: 10px 16px; border-radius: 12px;
+  .controls { display: flex; gap: 6px; }
+  .btn.active { background: #1e88e5; color: #fff; }
+}
+
+/* CSS FORM */
+.head { display: flex; justify-content: space-between; align-items: center; h2 { margin: 0; } }
+.card { background: #141a24; border: 1px solid rgba(255,255,255,.08); border-radius: 14px; padding: 20px; display: grid; gap: 16px; }
+.row { display: grid; gap: 8px; label { font-weight: 600; span { color: #f05; } } }
+.err { color: #ffb4b4; font-size: 12px; margin-top: -4px; }
+.mt-3 { margin-top: 16px; }

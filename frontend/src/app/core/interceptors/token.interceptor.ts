@@ -13,43 +13,40 @@ function isJwtExpired(token: string): boolean {
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    // 1) Bỏ qua preflight
     if (req.method === 'OPTIONS') return next.handle(req);
 
-    // 2) Lấy path an toàn
     let path = '';
     try {
-      const url = req.url.startsWith('http')
-        ? new URL(req.url)
-        : new URL(req.url, location.origin);
+      const url = req.url.startsWith('http') ? new URL(req.url) : new URL(req.url, location.origin);
       path = url.pathname || '';
-    } catch {
-      // Nếu không parse được URL thì cứ để request đi tiếp
-      return next.handle(req);
-    }
+    } catch { return next.handle(req); }
 
-    // 3) Bỏ qua các endpoint public / auth / swagger
-    const isAuth = path.startsWith('/api/auth/');
+    // SỬA Ở ĐÂY: Chỉ lọc các API public không cần token (login, register, refresh)
+    const isAuthPublic = [
+      /^\/api\/auth\/login(?:\/|$)/,
+      /^\/api\/auth\/register(?:\/|$)/,
+      /^\/api\/auth\/refresh(?:\/|$)/
+    ].some(r => r.test(path));
+
     const isSwagger = path.startsWith('/swagger-ui') || path.startsWith('/v3/api-docs');
-    // token.interceptor.ts  (mở rộng isPublic)
     const isPublic = [
       /^\/api\/cinemas\/public(?:\/|$)/,
       /^\/api\/showtimes\/public(?:\/|$)/,
-      // thêm các public "không có /public" trong path:
-      /^\/api\/movies(?:\/|$)/,         // GET /api/movies?... (list, detail)
-      /^\/api\/genres(?:\/|$)/,         // GET /api/genres/all, /api/genres/:id
-      /^\/uploads(?:\/|$)/              // file tĩnh
+      /^\/api\/movies(?:\/|$)/,
+      /^\/api\/genres(?:\/|$)/,
+      /^\/uploads(?:\/|$)/
     ].some(r => r.test(path));
 
-
-    if (isAuth || isSwagger || isPublic) {
+    // Dùng isAuthPublic thay vì isAuth cũ (cái cũ chặn sạch /api/auth/)
+    if (isAuthPublic || isSwagger || isPublic) {
       return next.handle(req);
     }
 
-    // 4) Gắn Bearer chỉ khi token hợp lệ và chưa hết hạn
-    const raw = (localStorage.getItem('token') || '').trim();
-    if (!raw || raw === 'null' || raw === 'undefined' || isJwtExpired(raw)) {
-      // token rỗng/hết hạn -> không gắn header
+    // Đổi 'token' thành 'accessToken'
+    const raw = (localStorage.getItem('accessToken') || '').trim();
+
+    // Tạm thời bỏ isJwtExpired(raw) ở đây, cứ gửi token lên để Backend tự soi và báo lỗi 401 nếu hết hạn
+    if (!raw || raw === 'null' || raw === 'undefined') {
       return next.handle(req);
     }
 

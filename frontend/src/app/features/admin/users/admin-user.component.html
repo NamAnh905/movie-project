@@ -1,0 +1,55 @@
+<div class="wrap">
+  <div class="topbar">
+    <h2>Quản lý người dùng</h2>
+    <div class="searchbar">
+      <input [(ngModel)]="q" (keyup.enter)="onSearch()" placeholder="Tìm theo username, email..." />
+      <button class="btn primary" (click)="onSearch()">Tìm kiếm</button>
+    </div>
+  </div>
+
+  <div class="table">
+    <div class="thead">
+      <div>Username</div>
+      <div>Họ tên</div>
+      <div>Email</div>
+      <div>Trạng thái</div>
+      <div>Role</div>
+      <div>Thao tác</div>
+    </div>
+
+    <div class="row" *ngFor="let u of items">
+      <div><strong>{{u.username}}</strong></div>
+      <div>{{u.fullName || '—'}}</div>
+      <div><span class="muted">{{u.email || '—'}}</span></div>
+      <div><span class="badge" [class.ok]="u.status==='ACTIVE'">{{u.status}}</span></div>
+      <div>
+        <select [(ngModel)]="u._roleDraft">
+          <option value="USER">USER</option>
+          <option value="ADMIN">ADMIN</option>
+        </select>
+      </div>
+      <div>
+        <button class="btn primary small" (click)="saveRole(u)" [disabled]="u._saving || u._roleDraft===u.role">
+          {{ u._saving ? 'Đang lưu...' : 'Lưu role' }}
+        </button>
+      </div>
+    </div>
+
+    <div *ngIf="!items.length && !loading" class="empty">Không tìm thấy người dùng nào.</div>
+  </div>
+
+  <div class="pager" *ngIf="totalPages > 1">
+    <div class="info">
+      Trang <b>{{ page + 1 }}</b>/<b>{{ totalPages }}</b> · <span>{{ totalElements }}</span> người dùng
+    </div>
+    <div class="controls">
+      <button class="btn" [disabled]="page === 0" (click)="goTo(0)">«</button>
+      <button class="btn" [disabled]="page === 0" (click)="prev()">‹</button>
+      <button class="btn" *ngFor="let p of pager" [class.active]="p === page" (click)="goTo(p)">
+        {{ p + 1 }}
+      </button>
+      <button class="btn" [disabled]="page === totalPages - 1" (click)="next()">›</button>
+      <button class="btn" [disabled]="page === totalPages - 1" (click)="goTo(totalPages - 1)">»</button>
+    </div>
+  </div>
+</div>

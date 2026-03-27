@@ -1,15 +1,17 @@
 package com.example.movie.dto.request.auth;
 
 import jakarta.validation.constraints.NotBlank;
+import lombok.AccessLevel;
 import lombok.Data;
+import lombok.experimental.FieldDefaults;
 
 @Data
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class AuthRequest {
     @NotBlank
-    private String username;
-
+    String username;
     @NotBlank
-    private String password;
+    String password;
 }
 
 

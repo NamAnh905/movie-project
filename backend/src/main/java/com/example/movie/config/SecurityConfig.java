@@ -6,101 +6,84 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Configuration
 @EnableWebSecurity
-@EnableMethodSecurity(prePostEnabled = true)
+@EnableMethodSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
 
     private final JwtFilter jwtFilter;
-    private final UserDetailsService userDetailsService; // JpaUserDetailsService của bạn
 
-    // Bean #1: Password encoder
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-    // Bean #2: AuthenticationProvider (dùng UserDetailsService + PasswordEncoder)
-    @Bean
-    public AuthenticationProvider authenticationProvider() {
-        DaoAuthenticationProvider p = new DaoAuthenticationProvider();
-        p.setUserDetailsService(userDetailsService);
-        p.setPasswordEncoder(passwordEncoder());
-        return p;
-    }
-
-    // Bean #3: AuthenticationManager (cho AuthController)
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
     }
 
-    // KHÔNG tiêm AuthenticationProvider qua field/constructor để tránh vòng lặp
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http,
-                                           AuthenticationProvider authProvider) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable())
-                .cors(Customizer.withDefaults())
-                .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authenticationProvider(authProvider)
+                .csrf(AbstractHttpConfigurer::disable)
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        // Preflight cho CORS
-                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                        .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
+                        .requestMatchers("/auth/login", "/auth/register", "/auth/refresh").permitAll()
+                        .requestMatchers("/auth/me", "/auth/logout").authenticated()
+                        .requestMatchers("/uploads/**").permitAll()
 
-                        // ====== PUBLIC GET ======
-                        .requestMatchers(HttpMethod.GET,
-                                // movies: danh sách, chi tiết, lọc qua query
-                                "/api/movies", "/api/movies/*", "/api/movies/**",
-                                "/api/movies/all",
-                                "/api/movies/status/*/all",
+                        .requestMatchers(HttpMethod.GET, "/movies/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/genres/**").permitAll()
 
-                                // cinemas public
-                                "/api/cinemas/public", "/api/cinemas/public/**",
+                        .requestMatchers(HttpMethod.GET, "/cinemas/public/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/showtimes/public/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/showtimes/resolve").permitAll()
 
-                                // showtimes public
-                                "/api/showtimes/public", "/api/showtimes/public/**",
-                                "/api/showtimes/*", "/api/showtimes/resolve",
+                        .requestMatchers(HttpMethod.GET, "/bookings/showtimes/*/availability").permitAll()
+                        .requestMatchers("/bookings/mine").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/bookings").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/bookings/*").authenticated()
 
-                                // genres public
-                                "/api/genres/all", "/api/genres/*",
-
-                                //VNPAY
-                                "/api/payments/vnpay-return"
-                        ).permitAll()
-
-                        // Auth/Docs/Static
-                        .requestMatchers("/api/auth/**", "/swagger-ui/**", "/v3/api-docs/**", "/uploads/**").permitAll()
-
-                        // Bookings
-                        .requestMatchers(HttpMethod.GET, "/api/bookings/mine").authenticated()
-                        .requestMatchers(HttpMethod.GET, "/api/bookings/*").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/bookings").authenticated()
-                        .requestMatchers(HttpMethod.PUT,  "/api/bookings/**").authenticated()
-                        .requestMatchers(HttpMethod.DELETE, "/api/bookings/**").hasRole("ADMIN")
-
-                        // còn lại
+                        .requestMatchers("/payments/vnpay/**").authenticated()
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
+    }
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOriginPatterns(List.of("*"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
+        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "Accept", "X-Requested-With"));
+        configuration.setAllowCredentials(true);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
     }
 }

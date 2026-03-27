@@ -1,13 +1,14 @@
 export const environment = {
   production: false,
-  baseUrl: 'http://localhost:8080',
+  baseUrl: 'http://localhost:8080/api',
+
   api: {
-    auth: '/api/auth',
-    movies: '/api/movies',
-    genres: '/api/genres',
-    cinemas: '/api/cinemas',
-    showtimes: '/api/showtimes',
-    files: '/api/files',      // + thêm
-    uploads: '/uploads'       // + thêm (static)
+    auth: '/auth',
+    movies: '/movies',
+    genres: '/genres',
+    cinemas: '/cinemas',
+    showtimes: '/showtimes',
+    files: '/files',
+    uploads: '/uploads'
   }
 };

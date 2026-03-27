@@ -1,7 +1,8 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
-import { CinemaService, Cinema } from '../../../features/cinemas/cinema.service';
+import { CinemaService } from '../../../api/public/cinema.service';
+import { Cinema } from '../../../models/cinema.model';
 
 @Component({
   selector: 'app-site-footer',
@@ -18,7 +19,7 @@ export class FooterComponent implements OnInit {
   cinemas = signal<Cinema[]>([]);
 
   ngOnInit(): void {
-    this.cinemaSvc.getCinemasPublic().subscribe({
+    this.cinemaSvc.listPublic().subscribe({
       next: (res) => this.cinemas.set(this.pick(res)),
       error: () => this.cinemas.set([]),
     });

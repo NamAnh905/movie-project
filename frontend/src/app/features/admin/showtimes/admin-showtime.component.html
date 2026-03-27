@@ -1,0 +1,120 @@
+<div class="wrap">
+  <ng-container *ngIf="!isFormMode">
+    <div class="bar">
+      <h2>Lịch chiếu</h2>
+      <div class="actions">
+        <input type="date" [(ngModel)]="qDate" (change)="search()">
+
+        <select [(ngModel)]="qMovie" (change)="search()">
+          <option [ngValue]="null">-- Tất cả Phim --</option>
+          <option *ngFor="let m of movies" [ngValue]="m.id">{{ m.title }}</option>
+        </select>
+
+        <select [(ngModel)]="qCinema" (change)="search()">
+          <option [ngValue]="null">-- Tất cả Rạp --</option>
+          <option *ngFor="let c of cinemas" [ngValue]="c.id">{{ c.name }}</option>
+        </select>
+
+        <select [(ngModel)]="qState" (change)="search()">
+          <option value="">-- Trạng thái --</option>
+          <option value="NOW_SHOWING">Đang chiếu</option>
+          <option value="UPCOMING">Sắp chiếu</option>
+          <option value="ENDED">Đã chiếu</option>
+        </select>
+
+        <button class="btn primary" (click)="openForm()">+ Tạo lịch chiếu (Batch)</button>
+      </div>
+    </div>
+
+    <div *ngIf="loading" class="hint mt-2">Đang tải...</div>
+
+    <table class="tbl mt-2" *ngIf="items.length">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Thời gian</th>
+          <th>Phim</th>
+          <th>Rạp</th>
+          <th>Giá vé</th>
+          <th>Trạng thái</th>
+          <th>Hành động</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let it of items">
+          <td>{{ it.id }}</td>
+          <td><b>{{ it.startTime | date:'dd/MM/yyyy' }}</b> <br/> <small>{{ it.startTime | date:'HH:mm' }} - {{ it.endTime | date:'HH:mm' }}</small></td>
+          <td>{{ it.movieTitle }}</td>
+          <td>{{ it.cinemaName }}</td>
+          <td>{{ it.price | number }} đ</td>
+          <td>
+            <span class="badge" [attr.data-state]="it.computedState">{{ it.computedState }}</span>
+          </td>
+          <td><button class="btn danger" (click)="remove(it)">Xóa</button></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="pager" *ngIf="totalPages > 1">
+      <div class="info">Trang <b>{{ page + 1 }}</b>/<b>{{ totalPages }}</b> · <span>{{ totalElements }}</span> suất chiếu</div>
+      <div class="controls">
+        <button class="btn" [disabled]="page === 0" (click)="goTo(page - 1)">Trước</button>
+        <button class="btn" [disabled]="page === totalPages - 1" (click)="goTo(page + 1)">Sau</button>
+      </div>
+    </div>
+  </ng-container>
+
+  <ng-container *ngIf="isFormMode">
+    <div class="bar">
+      <h2>Tạo suất chiếu (Hàng loạt)</h2>
+      <button class="btn" (click)="closeForm()">⬅ Quay lại</button>
+    </div>
+
+    <div class="grid mt-2">
+      <div class="card">
+        <h3>1. Thông tin chung</h3>
+        <label>Chọn ngày</label>
+        <input type="date" [(ngModel)]="fDate">
+
+        <label class="mt-2">Chọn phim</label>
+        <select [(ngModel)]="fMovie">
+          <option *ngFor="let m of movies" [ngValue]="m.id">{{m.title}}</option>
+        </select>
+
+        <label class="mt-2">Chọn rạp</label>
+        <select [(ngModel)]="fCinema">
+          <option *ngFor="let c of cinemas" [ngValue]="c.id">{{c.name}}</option>
+        </select>
+      </div>
+
+      <div class="card">
+        <h3>2. Giá & Số ghế</h3>
+        <label>Giá vé (VNĐ)</label>
+        <input type="number" min="0" step="1000" [(ngModel)]="price">
+
+        <label class="mt-2">Tổng số ghế (Capacity)</label>
+        <input type="number" min="1" [(ngModel)]="capacity">
+      </div>
+
+      <div class="card full">
+        <h3>3. Khung giờ chiếu</h3>
+        <div class="row">
+          <input type="time" step="900" [(ngModel)]="newTime" style="max-width:200px">
+          <button class="btn" (click)="addTime()">Thêm giờ</button>
+        </div>
+        <div class="times mt-2">
+          <span class="chip" *ngFor="let t of times">
+            {{t}} <button (click)="removeTime(t)">×</button>
+          </span>
+          <span *ngIf="!times.length" class="hint">Chưa có giờ nào được chọn.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="actions" style="margin-top: 20px; text-align: right;">
+      <button class="btn primary lg" [disabled]="saving || !times.length" (click)="save()">
+        {{ saving ? 'Đang tạo...' : 'Lưu tất cả lịch chiếu' }}
+      </button>
+    </div>
+  </ng-container>
+</div>

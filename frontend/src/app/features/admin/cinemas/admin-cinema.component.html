@@ -1,0 +1,90 @@
+<div class="wrap">
+  <ng-container *ngIf="!isFormMode">
+    <div class="bar">
+      <h2>Quản lý rạp</h2>
+      <div class="actions">
+        <input [(ngModel)]="q" placeholder="Tìm theo tên rạp" (keyup.enter)="onSearch()">
+        <button class="btn" (click)="onSearch()">Tìm</button>
+        <div class="divider"></div>
+        <button class="primary" (click)="openForm()">+ Thêm rạp</button>
+      </div>
+    </div>
+
+    <table class="tbl" *ngIf="items.length; else empty">
+      <thead>
+        <tr>
+          <th style="width:80px">ID</th>
+          <th>Tên rạp</th>
+          <th>Địa chỉ</th>
+          <th style="width:160px">Trạng thái</th>
+          <th style="width:160px">Hành động</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let c of items">
+          <td>{{ c.id }}</td>
+          <td>{{ c.name }}</td>
+          <td>{{ c.address || '—' }}</td>
+          <td>{{ c.status }}</td>
+          <td class="ops">
+            <a class="edit" (click)="openForm(c)">Sửa</a>
+            <button class="danger" (click)="remove(c.id)">Xóa</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <ng-template #empty>
+      <div class="empty">Chưa có dữ liệu</div>
+    </ng-template>
+
+    <div class="pager" *ngIf="totalPages > 1">
+      <div class="info">
+        Trang <b>{{ page + 1 }}</b>/<b>{{ totalPages }}</b> · <span>{{ totalElements }}</span> rạp
+      </div>
+      <div class="controls">
+        <button class="btn" [disabled]="page === 0" (click)="goTo(0)">«</button>
+        <button class="btn" [disabled]="page === 0" (click)="prev()">‹</button>
+        <button class="btn" *ngFor="let p of pager" [class.active]="p === page" (click)="goTo(p)">
+          {{ p + 1 }}
+        </button>
+        <button class="btn" [disabled]="page === totalPages - 1" (click)="next()">›</button>
+        <button class="btn" [disabled]="page === totalPages - 1" (click)="goTo(totalPages - 1)">»</button>
+      </div>
+    </div>
+  </ng-container>
+
+  <ng-container *ngIf="isFormMode">
+    <div class="head">
+      <h2>{{ editingId ? 'Sửa rạp' : 'Thêm rạp' }}</h2>
+      <button class="btn" (click)="closeForm()">⬅ Quay lại</button>
+    </div>
+
+    <form [formGroup]="form" (ngSubmit)="submit()" class="card mt-3">
+      <div class="row">
+        <label>Tên rạp <span>*</span></label>
+        <input type="text" formControlName="name" placeholder="Nhập tên rạp" />
+        <div class="err" *ngIf="f['name'].touched && f['name'].invalid">Tên rạp không hợp lệ.</div>
+      </div>
+
+      <div class="row">
+        <label>Địa chỉ</label>
+        <input type="text" formControlName="address" placeholder="Nhập địa chỉ" />
+      </div>
+
+      <div class="row">
+        <label>Trạng thái</label>
+        <select formControlName="status">
+          <option value="ACTIVE">Hoạt động</option>
+          <option value="INACTIVE">Tạm dừng</option>
+        </select>
+      </div>
+
+      <div class="actions mt-3">
+        <button type="submit" class="primary" [disabled]="loading">
+          {{ loading ? 'Đang lưu...' : 'Lưu rạp' }}
+        </button>
+      </div>
+    </form>
+  </ng-container>
+</div>

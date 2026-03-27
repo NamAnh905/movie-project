@@ -1,9 +1,40 @@
 spring:
+  application:
+    name: movie
   profiles:
     active: ${SPRING_PROFILES_ACTIVE:dev}
+  config:
+    import: optional:classpath:application-secret.yml
+  flyway:
+    enabled: false
+  mvc:
+    throw-exception-if-no-handler-found: true
+  web:
+    resources:
+      add-mappings: false
+
+server:
+  error:
+    include-exception: true
+    include-message: always
+    include-stacktrace: ALWAYS
+  servlet:
+    context-path: /api
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+
+logging:
+  level:
+    org.springframework.web: DEBUG
+    com.example.movie: DEBUG
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
 
 ---
-
 spring:
   config:
     activate:
@@ -17,7 +48,7 @@ spring:
     hibernate:
       ddl-auto: update
     database-platform: org.hibernate.dialect.MySQLDialect
-  jpa.open-in-view: false
+    open-in-view: false
 
 vnpay:
   tmnCode: ${VNPAY_TMN_CODE:DEMO_TMN}
@@ -25,12 +56,16 @@ vnpay:
   payUrl: https://sandbox.vnpayment.vn/paymentv2/vpcpay.html
   returnUrl: http://localhost:8080/api/payments/vnpay-return
 
+cloudinary:
+  cloud-name: ${CLOUD_NAME}
+  api-key: ${CLOUD_API_KEY}
+  api-secret: ${CLOUD_API_SECRET}
+
 server:
   port: 8080
   forward-headers-strategy: framework
 
 ---
-
 spring:
   config:
     activate:
@@ -45,13 +80,18 @@ spring:
     hibernate:
       ddl-auto: update
     database-platform: org.hibernate.dialect.MySQLDialect
-  jpa.open-in-view: false
+    open-in-view: false
 
 vnpay:
   tmnCode: ${VNPAY_TMN_CODE}
   hashSecret: ${VNPAY_HASH_SECRET}
   payUrl: https://sandbox.vnpayment.vn/paymentv2/vpcpay.html
   returnUrl: https://movie-be-hecl.onrender.com/api/payments/vnpay-return
+
+cloudinary:
+  cloud-name: ${CLOUD_NAME}
+  api-key: ${CLOUD_API_KEY}
+  api-secret: ${CLOUD_API_SECRET}
 
 server:
   port: ${PORT:8080}

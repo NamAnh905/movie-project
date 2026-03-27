@@ -1,0 +1,61 @@
+<section class="history">
+  <ng-container *ngIf="!selectedId">
+    <h2>Lịch sử đặt vé</h2>
+
+    <div *ngIf="loading" class="alert">Đang tải lịch sử...</div>
+    <div *ngIf="error" class="alert error">{{ error }}</div>
+
+    <ul class="list" *ngIf="!loading && !error && items.length; else empty">
+      <li class="booking-card" *ngFor="let b of items" (click)="open(b.id)">
+        <div class="card-main">
+          <div class="card-left">
+            <div class="id">Mã vé: #{{ b.id }}</div>
+            <h3 class="title">{{ b.movieTitle }}</h3>
+            <div class="cinema">{{ b.cinemaName }}</div>
+
+            <div class="meta">
+              <span class="chip">⏰ {{ b.startTime | date:'HH:mm dd/MM/yyyy' }}</span>
+              <span class="chip">🎟️ {{ b.quantity }} vé</span>
+              <span class="chip">💰 {{ b.totalPrice | number:'1.0-0' }} đ</span>
+            </div>
+          </div>
+
+          <div class="card-right">
+            <span class="badge" [ngClass]="statusClass(b.status)">{{ b.status }}</span>
+            <span class="view-btn">Chi tiết ➔</span>
+          </div>
+        </div>
+      </li>
+    </ul>
+
+    <ng-template #empty>
+      <div class="empty" *ngIf="!loading && !error">Chưa có đơn đặt vé nào.</div>
+    </ng-template>
+  </ng-container>
+
+  <ng-container *ngIf="selectedId">
+    <div class="head">
+      <h2>Chi tiết vé #{{ selectedId }}</h2>
+      <button class="btn-back" (click)="close()">⬅ Quay lại</button>
+    </div>
+
+    <div *ngIf="detailLoading" class="alert">Đang tải chi tiết...</div>
+    <div *ngIf="detailError" class="alert error">{{ detailError }}</div>
+
+    <div class="detail-card" *ngIf="detailData">
+      <div class="d-row"><span>Phim:</span> <b>{{ detailData.movieTitle }}</b></div>
+      <div class="d-row"><span>Rạp chiếu:</span> <b>{{ detailData.cinemaName }}</b></div>
+      <div class="d-row"><span>Suất chiếu:</span> <b>{{ detailData.startTime | date:'HH:mm - dd/MM/yyyy' }}</b></div>
+      <hr>
+      <div class="d-row"><span>Khách hàng:</span> <b>{{ detailData.customerName || '—' }}</b></div>
+      <div class="d-row"><span>Email:</span> <b>{{ detailData.customerEmail || '—' }}</b></div>
+      <hr>
+      <div class="d-row"><span>Số vé:</span> <b>{{ detailData.quantity }}</b></div>
+      <div class="d-row"><span>Đơn giá:</span> <b>{{ detailData.unitPrice | number:'1.0-0' }} đ</b></div>
+      <div class="d-row highlight"><span>Tổng tiền:</span> <b>{{ detailData.totalPrice | number:'1.0-0' }} đ</b></div>
+      <hr>
+      <div class="d-row"><span>Trạng thái:</span> <b [ngClass]="statusClass(detailData.status)">{{ detailData.status }}</b></div>
+      <!-- <div class="d-row" *ngIf="detailData.paymentMethod"><span>Thanh toán qua:</span> <b>{{ detailData.paymentMethod }}</b></div> -->
+    </div>
+  </ng-container>
+</section>

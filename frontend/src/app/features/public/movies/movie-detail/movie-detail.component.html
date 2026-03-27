@@ -1,0 +1,45 @@
+<section class="detail container" *ngIf="!loading && movie">
+  <div class="layout">
+    <div class="left">
+      <img class="poster"
+           [src]="movie.posterUrl || 'assets/posters/banner.png'"
+           [alt]="movie.title" />
+    </div>
+
+    <div class="right">
+      <h1 class="title">{{ movie.title }}</h1>
+
+      <div class="badges">
+        <span class="badge age" *ngIf="movie.ageRating">{{ movie.ageRating }}</span>
+        <span class="badge status" *ngIf="movie.status">
+          {{ movie.status === 'RELEASED' ? 'Đang chiếu' : 'Sắp chiếu' }}
+        </span>
+      </div>
+
+      <div class="meta">
+        <div class="row" *ngIf="movie.duration"><span class="k">Thời lượng</span><span class="v">{{ movie.duration }} phút</span></div>
+        <div class="row" *ngIf="movie.releaseDate"><span class="k">Khởi chiếu</span><span class="v">{{ movie.releaseDate | date:'dd/MM/yyyy' }}</span></div>
+        <div class="row" *ngIf="movie.language"><span class="k">Ngôn ngữ</span><span class="v">{{ movie.language }}</span></div>
+        <div class="row" *ngIf="movie.country"><span class="k">Quốc gia</span><span class="v">{{ movie.country }}</span></div>
+
+        <div class="row" *ngIf="movie.genreNames?.length">
+          <span class="k">Thể loại</span>
+          <span class="v chips">
+            <span class="chip" *ngFor="let g of movie.genreNames">{{ g }}</span>
+          </span>
+        </div>
+      </div>
+
+      <div class="desc" *ngIf="movie.description">
+        <h3>Nội dung</h3>
+        <p>{{ movie.description }}</p>
+      </div>
+
+      <div class="actions">
+        <a class="btn primary" [routerLink]="['/showtimes']" [queryParams]="{ movieId: movie.id }">Xem lịch chiếu</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="container error" *ngIf="errorMsg">{{ errorMsg }}</section>

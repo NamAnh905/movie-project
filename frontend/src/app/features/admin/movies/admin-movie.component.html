@@ -1,0 +1,151 @@
+<div class="wrap">
+  <ng-container *ngIf="!isFormMode">
+    <div class="bar">
+      <h2>Quản lý phim</h2>
+      <div class="actions">
+        <select [(ngModel)]="selectedGenreId" (change)="onSearch()">
+          <option [ngValue]="null">-- Tất cả thể loại --</option>
+          <option *ngFor="let g of genres" [ngValue]="g.id">{{ g.name }}</option>
+        </select>
+
+        <input [(ngModel)]="q" placeholder="Tìm theo tên" (keyup.enter)="onSearch()">
+        <button class="btn" (click)="onSearch()">Tìm</button>
+        <button class="btn primary" (click)="openForm()">+ Thêm phim</button>
+      </div>
+    </div>
+
+    <table class="tbl" *ngIf="items.length; else empty">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Poster</th>
+          <th>Tiêu đề</th>
+          <th>Thể loại</th>
+          <th>Thời lượng</th>
+          <th>Ngôn ngữ</th>
+          <th>Quốc gia</th>
+          <th>Trạng thái</th>
+          <th>Hành động</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let m of items">
+          <td>{{ m.id }}</td>
+          <td><img [src]="m.posterUrl || '/assets/placeholder-poster.webp'" alt="poster"></td>
+          <td>{{ m.title }}</td>
+          <td>
+            <span *ngIf="m.genreNames?.length; else noGenre">
+              <ng-container *ngFor="let g of m.genreNames; let last = last">
+                {{ g }}<ng-container *ngIf="!last">, </ng-container>
+              </ng-container>
+            </span>
+            <ng-template #noGenre><i class="muted">—</i></ng-template>
+          </td>
+          <td>{{ m.duration }}'</td>
+          <td>{{ m.language }}</td>
+          <td>{{ m.country }}</td>
+          <td><span class="badge" [attr.data-status]="m.status">{{ m.status }}</span></td>
+          <td class="ops">
+            <a class="edit" (click)="openForm(m)">Sửa</a>
+            <button class="danger" (click)="remove(m.id)">Xóa</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <ng-template #empty>
+      <div class="empty">Chưa có dữ liệu</div>
+    </ng-template>
+
+    <div class="pager" *ngIf="totalPages > 1">
+      <div class="info">
+        Trang <b>{{ page + 1 }}</b>/<b>{{ totalPages }}</b> · <span>{{ totalElements }}</span> phim
+      </div>
+      <div class="controls">
+        <button class="btn" [disabled]="page === 0" (click)="goTo(0)">«</button>
+        <button class="btn" [disabled]="page === 0" (click)="prev()">‹</button>
+        <button class="btn" *ngFor="let p of pager" [class.active]="p === page" (click)="goTo(p)">
+          {{ p + 1 }}
+        </button>
+        <button class="btn" [disabled]="page === totalPages - 1" (click)="next()">›</button>
+        <button class="btn" [disabled]="page === totalPages - 1" (click)="goTo(totalPages - 1)">»</button>
+      </div>
+    </div>
+  </ng-container>
+
+  <ng-container *ngIf="isFormMode">
+    <div class="head">
+      <h2>{{ editingId ? 'Sửa phim' : 'Thêm phim' }}</h2>
+      <button class="btn" (click)="closeForm()">⬅ Quay lại</button>
+    </div>
+
+    <form [formGroup]="f" class="form mt-3" (ngSubmit)="save()">
+      <div class="grid">
+        <label>Tiêu đề
+          <input formControlName="title">
+        </label>
+
+        <label>Poster URL
+          <input formControlName="posterUrl" placeholder="https://...">
+          <input type="file" accept="image/*" (change)="onPosterPicked($event)" />
+          <small *ngIf="uploading">Đang tải ảnh lên...</small>
+          <img *ngIf="posterPreview" [src]="posterPreview" alt="preview" style="max-height:80px;margin-top:6px;border-radius:8px;">
+        </label>
+
+        <label>Thời lượng (phút)
+          <input type="number" formControlName="duration">
+        </label>
+
+        <label>Trạng thái
+          <select formControlName="status">
+            <option value="RELEASED">RELEASED</option>
+            <option value="COMING_SOON">COMING_SOON</option>
+          </select>
+        </label>
+
+        <label>Ngày khởi chiếu
+          <input type="date" formControlName="releaseDate">
+        </label>
+
+        <label>Ngôn ngữ
+          <input formControlName="language">
+        </label>
+
+        <label>Quốc gia
+          <input formControlName="country">
+        </label>
+
+        <label>Giới hạn tuổi
+          <input formControlName="ageRating">
+        </label>
+
+        <label class="full">Mô tả
+          <textarea rows="5" formControlName="description"></textarea>
+        </label>
+
+        <div class="full">
+          <div class="field-title">Thể loại</div>
+          <div class="checkbox-grid">
+            <label class="chk" *ngFor="let g of genres; trackBy: trackById">
+              <input type="checkbox"
+                     [checked]="f.value.genreIds?.includes(g.id)"
+                     (change)="onToggleGenre(g.id, $event)">
+              <span>{{ g.name }}</span>
+            </label>
+          </div>
+          <div class="chips" *ngIf="f.value.genreIds?.length">
+            <span class="chip" *ngFor="let g of genres" [hidden]="!f.value.genreIds?.includes(g.id)">
+              {{ g.name }}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="actions mt-3">
+        <button type="submit" class="btn primary" [disabled]="f.invalid || uploading">
+          Lưu phim
+        </button>
+      </div>
+    </form>
+  </ng-container>
+</div>

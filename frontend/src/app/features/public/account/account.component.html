@@ -1,0 +1,30 @@
+<div class="account-wrap">
+  <h2>Thông tin tài khoản</h2>
+
+  <div *ngIf="message" class="alert" [ngClass]="{'error': isError, 'success': !isError}">
+    {{ message }}
+  </div>
+
+  <form [formGroup]="f" (ngSubmit)="save()" class="form">
+    <div class="row">
+      <label>Username</label>
+      <input type="text" formControlName="username" />
+    </div>
+
+    <div class="row">
+      <label>Họ tên</label>
+      <input type="text" formControlName="fullName" placeholder="Nhập họ tên" />
+    </div>
+
+    <div class="row">
+      <label>Email</label>
+      <input type="email" formControlName="email" placeholder="name@example.com" />
+    </div>
+
+    <div class="actions">
+      <button class="btn primary" type="submit" [disabled]="f.invalid || loading">
+        {{ loading ? 'Đang lưu...' : 'Lưu thay đổi' }}
+      </button>
+    </div>
+  </form>
+</div>

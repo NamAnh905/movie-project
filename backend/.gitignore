@@ -30,3 +30,5 @@ frontend/dist/
 .env
 *.env
 *.log
+
+application-secret.yml

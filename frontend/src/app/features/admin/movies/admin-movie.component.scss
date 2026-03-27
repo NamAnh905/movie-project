@@ -1,0 +1,96 @@
+:host { display:block; color:#e5e7eb; }
+.wrap { padding: 16px; }
+.muted { opacity: 0.6; }
+
+/* ====== DANH SÁCH ====== */
+.bar {
+  display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:12px;
+  h2 { margin:0; font-weight:800; }
+  .actions {
+    display:flex; gap:8px; align-items:center;
+    select, input {
+      background:#0b1220; color:#e5e7eb; outline:none;
+      border:1px solid rgba(255,255,255,.12); border-radius:12px; padding:8px 10px;
+    }
+  }
+}
+
+.btn {
+  border:none; border-radius:10px; padding:8px 12px; font-weight:700; cursor:pointer;
+  background:#1f2937; color:#fff;
+  &.primary { background:#2563eb; }
+  &:disabled { opacity: 0.5; cursor: not-allowed; }
+}
+
+.tbl {
+  width:100%; border-collapse:separate; border-spacing:0; overflow:hidden;
+  background:#0b1220; border:1px solid rgba(255,255,255,.08); border-radius:12px;
+  th, td { padding:10px 12px; border-top:1px solid rgba(255,255,255,.06); text-align: left; vertical-align: middle; }
+  thead th { background:#0f172a; color:#9fb0c4; font-weight:600; text-transform:uppercase; font-size:12px; border-top:none; }
+  tbody tr { transition: background .15s; }
+  tbody tr:hover { background:rgba(255,255,255,.03); }
+  td img { width:50px; height:75px; object-fit:cover; border-radius:6px; border:1px solid rgba(255,255,255,.08); }
+
+  .ops {
+    display:flex; gap:8px; align-items:center;
+    a.edit, button.danger { border:none; border-radius:8px; padding:6px 10px; cursor:pointer; font-weight:600; text-decoration:none; }
+    a.edit { background:#1f2937; color:#fff; }
+    button.danger { background:#ef4444; color:#fff; }
+  }
+
+  .badge {
+    padding: 4px 8px; border-radius: 6px; font-size: 11px; font-weight: bold;
+    background: rgba(255,255,255,0.1);
+    &[data-status="RELEASED"] { background: rgba(16, 185, 129, 0.2); color: #6ee7b7; }
+    &[data-status="COMING_SOON"] { background: rgba(245, 158, 11, 0.2); color: #fcd34d; }
+  }
+}
+
+.empty { padding:20px; text-align:center; color:#9fb0c4; border:1px dashed rgba(255,255,255,.2); border-radius:12px; margin-top: 10px; }
+
+.pager {
+  margin-top:16px; padding:10px 16px; display:flex; justify-content:space-between; align-items:center;
+  background:#0f172a; border-radius:12px;
+  .info { color:#9fb0c4; }
+  .controls { display: flex; gap: 6px; }
+  .btn.active { background: #2563eb; }
+}
+
+/* ====== FORM ====== */
+.head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; h2 { margin: 0; } }
+.mt-3 { margin-top: 16px; }
+
+.form {
+  background: #111318; border: 1px solid rgba(255,255,255,.08); border-radius: 16px; padding: 20px; color: #e8edf2;
+}
+
+.grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+  @media (max-width: 900px) { grid-template-columns: 1fr; }
+  label {
+    display: flex; flex-direction: column; gap: 6px; font-weight: 600;
+    input, select, textarea {
+      background: #1a1d24; color: #e8edf2; border: 1px solid rgba(255,255,255,.08);
+      border-radius: 10px; padding: 10px; outline: none;
+      &:focus { border-color: rgba(255,255,255,.12); box-shadow: 0 0 0 3px rgba(79,70,229,.15); }
+    }
+  }
+  .full { grid-column: 1 / -1; }
+}
+
+.field-title { margin: 6px 0 8px; color: #9fb0c6; font-size: 13px; font-weight: 600; }
+.checkbox-grid {
+  display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 8px;
+  @media (max-width: 900px) { grid-template-columns: repeat(2, minmax(0,1fr)); }
+  @media (max-width: 600px) { grid-template-columns: 1fr; }
+}
+
+.chk {
+  display: flex !important; flex-direction: row !important; align-items: center; gap: 10px; padding: 8px 10px;
+  border-radius: 10px; background: #0f1218; border: 1px solid rgba(255,255,255,.08); cursor: pointer; font-weight: normal !important;
+  input[type="checkbox"] { width: 16px; height: 16px; accent-color: #4f46e5; margin: 0; }
+}
+
+.chips { margin-top: 10px; display: flex; gap: 8px; flex-wrap: wrap; }
+.chip { background: rgba(79,70,229,.2); border: 1px solid rgba(79,70,229,.4); padding: 4px 10px; border-radius: 20px; font-size: 12px; color: #c7d2fe; }
+.actions { display: flex; gap: 10px; }

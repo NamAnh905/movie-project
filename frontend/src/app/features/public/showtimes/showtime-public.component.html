@@ -1,0 +1,75 @@
+<div class="showtime-wrap">
+  <div class="filters-row">
+    <div class="filter-item">
+      <label>Chọn ngày</label>
+      <input
+        type="date"
+        [ngModel]="selectedDate()"
+        (ngModelChange)="onDateChange($event)"
+      />
+    </div>
+
+    <div class="filter-item" *ngIf="mode() === 'byCinema'">
+      <label>Chọn rạp</label>
+      <select [ngModel]="selectedCinemaId()" (ngModelChange)="selectedCinemaId.set($event); load()">
+        <option *ngFor="let c of cinemas()" [value]="c.id">{{ c.name }}</option>
+      </select>
+    </div>
+  </div>
+
+  <div *ngIf="loading()" class="status-msg">
+    <span class="loader"></span> Đang tải lịch chiếu...
+  </div>
+
+  <div *ngIf="errorMsg()" class="status-msg error">
+    ⚠️ {{ errorMsg() }}
+  </div>
+
+  <div class="cards-grid" *ngIf="!loading() && groups().length; else emptyTpl">
+    <div class="showtime-card" *ngFor="let g of groups()">
+      <div class="poster-box">
+        <img
+          [src]="(mode() === 'byMovie' ? movieInfo()?.posterUrl : g.posterUrl) || 'assets/posters/banner.png'"
+          [alt]="g.title"
+          (error)="onImgError($event)"
+        />
+      </div>
+
+      <div class="info-box">
+        <h3 class="group-title">
+          <ng-container *ngIf="mode() === 'byMovie'; else cinemaModeTitle">
+            <span class="sub-label">Rạp chiếu:</span> {{ g.title }}
+          </ng-container>
+          <ng-template #cinemaModeTitle>
+            {{ g.title }}
+          </ng-template>
+        </h3>
+
+        <div class="time-slots">
+          <p class="slot-label">Chọn suất chiếu để đặt vé:</p>
+          <div class="chips-wrap">
+            <button
+              class="time-chip"
+              *ngFor="let time of g.times"
+              (click)="quickBookTime(time, g)"
+            >
+              {{ time }}
+            </button>
+          </div>
+        </div>
+
+        <div class="actions" *ngIf="mode() === 'byCinema'">
+          <a class="link-detail" [routerLink]="['/movies', g.id]">Xem thông tin phim</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #emptyTpl>
+    <div class="empty-state" *ngIf="!loading() && !errorMsg()">
+      <div class="icon">🎟️</div>
+      <p>Rất tiếc, hiện tại không có suất chiếu nào cho lựa chọn này.</p>
+      <button class="btn-refresh" (click)="load()">Thử tải lại</button>
+    </div>
+  </ng-template>
+</div>

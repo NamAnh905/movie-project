@@ -1,15 +1,14 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
-import { RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { AuthService } from '../../../core/services/auth.service';
+import { AuthService } from '../../../api/auth/auth.service';
 
-const USER_HOME = '/movies'; // ✅ user thường sẽ về trang này
+const USER_HOME = '/movies';
 
 @Component({
   standalone: true,
@@ -22,8 +21,7 @@ const USER_HOME = '/movies'; // ✅ user thường sẽ về trang này
   host: { class: 'auth-page' }
 })
 export class LoginComponent {
-  // Khớp với template đang dùng model.email/password
-  model = { email: '', password: '' };
+  model = { username: '', password: '' }; // Sửa email thành username
   loading = false;
 
   constructor(
@@ -34,18 +32,16 @@ export class LoginComponent {
   ) {}
 
   submit() {
-    const u = (this.model.email || '').trim();
+    const u = (this.model.username || '').trim();
     const p = (this.model.password || '').trim();
     if (!u || !p || this.loading) return;
 
     this.loading = true;
-    this.auth.login({ username: u, email: u, password: p }).subscribe({
+    this.auth.login({ username: u, password: p }).subscribe({
       next: () => {
         const ru = this.route.snapshot.queryParamMap.get('returnUrl') || '';
-
-        // Admin: vào /admin (ưu tiên ru nếu là nhánh admin)
-        // User : theo ru nếu KHÔNG phải admin, ngược lại về USER_HOME
         let target = USER_HOME;
+
         if (this.auth.isAdmin()) {
           target = ru && ru.startsWith('/admin') ? ru : '/admin';
         } else {

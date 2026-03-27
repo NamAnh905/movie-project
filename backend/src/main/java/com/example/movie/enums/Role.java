@@ -1,3 +1,6 @@
 package com.example.movie.enums;
 
-public enum Role { ADMIN, USER }
+public enum Role {
+    ADMIN,
+    USER
+}

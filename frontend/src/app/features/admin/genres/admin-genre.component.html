@@ -1,0 +1,64 @@
+<div class="wrap">
+  <ng-container *ngIf="!isFormMode">
+    <section class="page-head">
+      <h2>Quản lý thể loại</h2>
+      <div class="head-actions">
+        <input [(ngModel)]="q" placeholder="Tìm theo tên..." (keyup.enter)="search()" />
+        <button class="btn" (click)="search()">Tìm</button>
+        <button class="btn primary" (click)="openForm()">+ Thêm thể loại</button>
+      </div>
+    </section>
+
+    <div class="card">
+      <table class="table">
+        <thead>
+          <tr>
+            <th style="width:80px;">ID</th>
+            <th>Tên thể loại</th>
+            <th>Slug</th>
+            <th class="text-right" style="width:160px;">Hành động</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let g of items">
+            <td>{{ g.id }}</td>
+            <td><strong>{{ g.name }}</strong></td>
+            <td class="muted">{{ g.slug }}</td>
+            <td class="text-right">
+              <button class="btn small edit-btn" (click)="openForm(g)">Sửa</button>
+              <button class="btn small danger-btn" (click)="remove(g.id)">Xóa</button>
+            </td>
+          </tr>
+          <tr *ngIf="!items.length && !loading">
+            <td colspan="4" class="text-center muted" style="padding: 20px;">Không có dữ liệu</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </ng-container>
+
+  <ng-container *ngIf="isFormMode">
+    <section class="page-head">
+      <h2>{{ editingId ? 'Sửa thể loại' : 'Thêm thể loại' }}</h2>
+      <button class="btn" (click)="closeForm()">⬅ Quay lại</button>
+    </section>
+
+    <div class="panel card">
+      <div class="grid-2">
+        <div class="field">
+          <label>Tên thể loại</label>
+          <input [(ngModel)]="form.name" placeholder="Ví dụ: Hành động" />
+        </div>
+        <div class="field">
+          <label>Slug (Tùy chọn)</label>
+          <input [(ngModel)]="form.slug" placeholder="hanh-dong" />
+        </div>
+      </div>
+      <div class="actions">
+        <button class="btn primary" (click)="save()" [disabled]="loading">
+          {{ loading ? 'Đang lưu...' : 'Lưu lại' }}
+        </button>
+      </div>
+    </div>
+  </ng-container>
+</div>

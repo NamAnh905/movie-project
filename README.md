@@ -11,6 +11,10 @@ movie-project/
 ├─ backend/  → Spring Boot (API, JWT, MySQL)
 └─ frontend/ → Angular (UI, routing, form, API calls)
 
+## Tài khoản admin:
+username/email: admin 
+password: 123456
+
 ## 🚀 Chạy local
 ### Backend
 ```bash

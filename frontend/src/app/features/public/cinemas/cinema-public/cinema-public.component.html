@@ -1,0 +1,77 @@
+<div class="wrap" *ngIf="cinemas().length; else noCinema">
+  <div class="hero">
+    <div class="thumb">
+      <img src="assets/posters/Cinemas_banner.jpg" alt="Cinema Banner">
+    </div>
+
+    <div class="info">
+      <h1>{{ selectedCinema()?.name || 'Rạp chiếu' }}</h1>
+      <div class="addr">📍 {{ selectedCinema()?.address || 'Đang cập nhật địa chỉ' }}</div>
+    </div>
+
+    <div class="ctrl">
+      <label>Chọn rạp khác</label>
+      <select [ngModel]="selectedCinemaId()" (ngModelChange)="onSelectCinema($event)">
+        <option *ngFor="let c of cinemas()" [value]="c.id">{{ c.name }}</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab" [class.active]="activeTab()==='now'"  (click)="activeTab.set('now')">PHIM ĐANG CHIẾU</button>
+    <button class="tab" [class.active]="activeTab()==='soon'" (click)="activeTab.set('soon')">PHIM SẮP CHIẾU</button>
+  </div>
+
+  <section class="panel" *ngIf="activeTab()==='now'">
+    <div *ngIf="loading()" class="hint">Đang tải lịch chiếu hôm nay...</div>
+    <div class="hint" *ngIf="!loading() && !nowShowing().length">Hôm nay chưa có lịch chiếu nào tại rạp này.</div>
+
+    <div class="grid" *ngIf="!loading() && nowShowing().length">
+      <article class="card" *ngFor="let m of nowShowing()">
+        <div class="poster">
+          <img [src]="m.posterUrl || FALLBACK_POSTER" [alt]="m.movieTitle" (error)="imgFallback($event)" />
+        </div>
+        <div class="body">
+          <h3 class="title">{{ m.movieTitle }}</h3>
+
+          <div class="times" *ngIf="m.times?.length; else noTime">
+            <a class="chip" *ngFor="let t of m.times" [routerLink]="['/movies', m.movieId]">{{ t }}</a>
+          </div>
+          <ng-template #noTime>
+            <div class="hint">Đã hết suất chiếu trong ngày</div>
+          </ng-template>
+
+          <a class="link" [routerLink]="['/movies', m.movieId]">Xem chi tiết phim</a>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="panel" *ngIf="activeTab()==='soon'">
+    <div class="hint" *ngIf="!comingSoon().length">Hiện chưa có phim nào sắp chiếu.</div>
+
+    <div class="grid" *ngIf="comingSoon().length">
+      <article class="card" *ngFor="let m of comingSoon()">
+        <div class="poster">
+          <img [src]="m.posterUrl || FALLBACK_POSTER" [alt]="m.title" (error)="imgFallback($event)" />
+        </div>
+        <div class="body">
+          <h3 class="title">{{ m.title }}</h3>
+          <div class="meta">
+            <span *ngIf="m.ageRating">Độ tuổi: {{ m.ageRating }}</span>
+            <span *ngIf="m.duration"> • {{ m.duration }}′</span>
+          </div>
+          <div class="hint" style="margin-top:10px;">Dự kiến: {{ m.releaseDate | date:'dd/MM/yyyy' }}</div>
+
+          <a class="link" [routerLink]="['/movies', m.id]">Xem chi tiết phim</a>
+        </div>
+      </article>
+    </div>
+  </section>
+</div>
+
+<ng-template #noCinema>
+  <div class="wrap" style="text-align: center; padding-top: 60px; color: #a9bbd8;">
+    <h3>Đang tải dữ liệu rạp chiếu...</h3>
+  </div>
+</ng-template>
